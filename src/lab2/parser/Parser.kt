@@ -119,7 +119,7 @@ class Parser {
         val res = NonTerminal("D")
         return when(token){
             Token.VARIABLE -> {
-                res.add(Terminal(token!!.char))
+                res.add(Terminal(token!!.char,lex.curVar()))
                 token = lex.nextToken()
                 res
             }

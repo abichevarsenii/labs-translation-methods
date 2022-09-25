@@ -8,6 +8,7 @@ class LexicalAnalyzer(var reader: InputStream) {
     var curChar: Int = 0
     var curPos = 0
     var curToken: Token? = null
+    var curVar: String = ""
 
     init {
         nextChar()
@@ -64,6 +65,7 @@ class LexicalAnalyzer(var reader: InputStream) {
             }
 
             in ('A'..'z').map { a -> a.code } -> {
+                curVar = curChar.toChar().toString()
                 nextChar()
                 Token.VARIABLE
             }
@@ -71,6 +73,10 @@ class LexicalAnalyzer(var reader: InputStream) {
             else -> throw ParseException("Illegal character $curChar", curPos)
         }
         return curToken()
+    }
+
+    fun curVar() : String{
+        return curVar
     }
 
     fun curToken(): Token? {

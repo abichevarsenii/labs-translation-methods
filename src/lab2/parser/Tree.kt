@@ -6,6 +6,10 @@ class Tree {
         abstract fun <R> map(func: (Node) -> R, sum: (R, R) -> Unit, endFunc: (Node) -> R) : R
     }
     class Terminal(name: String) : Node(name) {
+        constructor(name: String, value: String) : this(name) {
+           this.value = value
+        }
+        var value : String = ""
         override fun <R> map(func: (Node) -> R, sum: (R, R) -> Unit, endFunc: (Node) -> R) : R {
             return endFunc(this)
         }
