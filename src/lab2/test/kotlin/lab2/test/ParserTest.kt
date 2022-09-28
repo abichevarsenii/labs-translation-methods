@@ -23,22 +23,38 @@ class ParserTest {
             "^" to "!=",
         )
 
-        val correctExpression = listOf(
-            "(!a | b) & a & (a | !(b ^ c))"
+        val correctExpression = mapOf(
+            "a" to "SimpleVariable",
+            "a & b" to "SimpleOperation",
+            "a ^ b ^ c" to "TripleOperation",
+            "(((a ^ b)))" to "SimpleOperationInBrackets",
+            "!a" to "SimpleNot",
+            "!(a | b)" to "SimpleNotWithSimpleOperation",
+            "((((((a))))))^((((b))))" to "ManyBrackets",
+            "(!a | b) & a & (a | !(b ^ c))" to "FullExpressionWithAllOperations",
+            "a & b & c & d & e & f & g & s & q & v & h & k & l & z" to "ManyVariables",
+            "(!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | b) & a & (a | !(b ^ c)) | !(b ^ c))" to "LongExpression",
+            "(!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | (!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | b) & a & (a | !(b ^ c)) | !(b ^ c))) & a & (a | !(b ^ c)) | !(b ^ c))" to "VeryLongExpression"
         )
-        val incorrectExpression = listOf(
-            ")"
+        val incorrectExpression = mapOf(
+            ")" to "SimpleBracket",
+            "||" to "IncorrectOperation",
+            "&(a)" to "IncorrectArityOperation",
+            "((((((()))))))))" to "IncorrectBalanceOfBrackets",
+            "6" to "Number",
+            "*" to "IncorrectSymbol",
+            "aa" to "IncorrectNameOfVariable",
         )
     }
 
 
     @TestFactory
     fun simpleTest(): Collection<DynamicTest> {
-       return  correctExpression.mapIndexed { i, item  ->
-            dynamicTest("Check expression $item") {
-                allVariations(getVariables(item)).forEach { param ->
-                    println(param)
-                    assert(checkedValue(item, param) == expectedValue(item, param))
+        return correctExpression.map { pair ->
+            dynamicTest("${pair.value}Test") {
+                println("Check expression ${pair.key}")
+                allVariations(getVariables(pair.key)).forEach { param ->
+                    assert(checkedValue(pair.key, param) == expectedValue(pair.key, param))
                 }
             }
         }.toList()
@@ -46,14 +62,15 @@ class ParserTest {
 
     @TestFactory
     fun exceptionTest(): Collection<DynamicTest> {
-        return  incorrectExpression.mapIndexed { i, item  ->
-            dynamicTest("Check expression $item") {
-                assertThrows<ParseException> { Parser().parse(item.byteInputStream()) }
+        return incorrectExpression.map { pair ->
+            dynamicTest("${pair.value}Test") {
+                println("Check expression ${pair.key}")
+                assertThrows<ParseException> { Parser().parse(pair.key.byteInputStream()) }
             }
         }.toList()
     }
 
-    fun treeWalk(node: Tree.Node, params: Map<String, Boolean>): String {
+    private fun treeWalk(node: Tree.Node, params: Map<String, Boolean>): String {
         val parent = node as? Tree.NonTerminal
         var res = ""
         if (parent != null) {
@@ -70,7 +87,7 @@ class ParserTest {
         return res
     }
 
-    fun allVariations(params: MutableList<String>): MutableList<MutableMap<String, Boolean>> {
+    private fun allVariations(params: MutableList<String>): MutableList<MutableMap<String, Boolean>> {
         if (params.size == 1) {
             return mutableListOf(
                 mutableMapOf(params[0] to true),
@@ -97,21 +114,21 @@ class ParserTest {
         return listTrue
     }
 
-    fun getVariables(string: String):MutableList<String>{
+    private fun getVariables(string: String): MutableList<String> {
         val res = mutableListOf<String>()
         variablesRange.filter { string.contains(it) }.forEach { res.add(it.toString()) }
         return res
     }
 
-    fun checkedValue(expression: String, params: Map<String, Boolean>): Boolean {
+    private fun checkedValue(expression: String, params: Map<String, Boolean>): Boolean {
         return evaluate(params, expression)
     }
 
-    fun expectedValue(expression: String, params: Map<String, Boolean>): Boolean {
+    private fun expectedValue(expression: String, params: Map<String, Boolean>): Boolean {
         return evaluate(params, treeWalk(Parser().parse(expression.byteInputStream()), params))
     }
 
-    fun evaluate(params: Map<String, Boolean>, string: String): Boolean {
+    private fun evaluate(params: Map<String, Boolean>, string: String): Boolean {
         val e = ScriptEngineManager(null).getEngineByName("nashorn")
         var str = string
         replaceOps.forEach { pair ->
