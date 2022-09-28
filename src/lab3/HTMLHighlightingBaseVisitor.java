@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
@@ -17,7 +17,5 @@ public class HTMLHighlightingBaseVisitor<T> extends AbstractParseTreeVisitor<T> 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStart(HTMLHighlightingParser.StartContext ctx) {
-		return visitChildren(ctx);
-	}
+	@Override public T visitStart(HTMLHighlightingParser.StartContext ctx) { return visitChildren(ctx); }
 }

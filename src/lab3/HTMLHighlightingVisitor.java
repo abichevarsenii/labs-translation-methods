@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 

@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
@@ -89,6 +89,8 @@ public class HTMLHighlightingParser extends Parser {
 	}
 
 	public static class StartContext extends ParserRuleContext {
+		public String val;
+		public Token NAME;
 		public TerminalNode NAME() { return getToken(HTMLHighlightingParser.NAME, 0); }
 		public StartContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
@@ -116,7 +118,8 @@ public class HTMLHighlightingParser extends Parser {
 			enterOuterAlt(_localctx, 1);
 			{
 			setState(2);
-			match(NAME);
+			((StartContext)_localctx).NAME = match(NAME);
+			 ((StartContext)_localctx).val =  "<p class=\"var\">" + (((StartContext)_localctx).NAME!=null?((StartContext)_localctx).NAME.getText():null) + "</p>"; 
 			}
 		}
 		catch (RecognitionException re) {
@@ -131,10 +134,11 @@ public class HTMLHighlightingParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\u0004\u0001\u0001\u0005\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"+
-		"\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0003\u0000\u0002\u0001"+
-		"\u0000\u0000\u0000\u0002\u0003\u0005\u0001\u0000\u0000\u0003\u0001\u0001"+
-		"\u0000\u0000\u0000\u0000";
+		"\u0004\u0001\u0001\u0006\u0002\u0000\u0007\u0000\u0001\u0000\u0001\u0000"+
+		"\u0001\u0000\u0001\u0000\u0000\u0000\u0001\u0000\u0000\u0000\u0004\u0000"+
+		"\u0002\u0001\u0000\u0000\u0000\u0002\u0003\u0005\u0001\u0000\u0000\u0003"+
+		"\u0004\u0006\u0000\uffff\uffff\u0000\u0004\u0001\u0001\u0000\u0000\u0000"+
+		"\u0000";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

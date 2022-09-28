@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -16,26 +16,20 @@ public class HTMLHighlightingBaseListener implements HTMLHighlightingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStart(HTMLHighlightingParser.StartContext ctx) {
-		System.out.println("Hello");
-	}
+	@Override public void enterStart(HTMLHighlightingParser.StartContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStart(HTMLHighlightingParser.StartContext ctx) {
-		System.out.println("Hello");
-	}
+	@Override public void exitStart(HTMLHighlightingParser.StartContext ctx) { }
 
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEveryRule(ParserRuleContext ctx) {
-		System.out.println("Hello");
-	}
+	@Override public void enterEveryRule(ParserRuleContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -47,15 +41,11 @@ public class HTMLHighlightingBaseListener implements HTMLHighlightingListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitTerminal(TerminalNode node) {
-		System.out.println("Hello");
-	}
+	@Override public void visitTerminal(TerminalNode node) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void visitErrorNode(ErrorNode node) {
-		System.out.println("Hello");
-	}
+	@Override public void visitErrorNode(ErrorNode node) { }
 }
