@@ -30,5 +30,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="udojava.EvalEx" level="project" />
+    <orderEntry type="library" name="antlr.antlr4" level="project" />
   </component>
 </module>
