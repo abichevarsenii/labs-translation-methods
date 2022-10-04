@@ -2,8 +2,6 @@ package lab3
 
 import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
 import java.io.FileReader
 import java.io.FileWriter
 import javax.swing.text.html.HTML
