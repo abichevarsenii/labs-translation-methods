@@ -23,6 +23,42 @@ public class HTMLHighlightingBaseListener implements HTMLHighlightingListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStart(HTMLHighlightingParser.StartContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterHeaderNode(HTMLHighlightingParser.HeaderNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitHeaderNode(HTMLHighlightingParser.HeaderNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPackageNode(HTMLHighlightingParser.PackageNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPackageNode(HTMLHighlightingParser.PackageNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterImportNode(HTMLHighlightingParser.ImportNodeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitImportNode(HTMLHighlightingParser.ImportNodeContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

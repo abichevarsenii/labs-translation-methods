@@ -17,4 +17,34 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStart(HTMLHighlightingParser.StartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#headerNode}.
+	 * @param ctx the parse tree
+	 */
+	void enterHeaderNode(HTMLHighlightingParser.HeaderNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#headerNode}.
+	 * @param ctx the parse tree
+	 */
+	void exitHeaderNode(HTMLHighlightingParser.HeaderNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#packageNode}.
+	 * @param ctx the parse tree
+	 */
+	void enterPackageNode(HTMLHighlightingParser.PackageNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#packageNode}.
+	 * @param ctx the parse tree
+	 */
+	void exitPackageNode(HTMLHighlightingParser.PackageNodeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#importNode}.
+	 * @param ctx the parse tree
+	 */
+	void enterImportNode(HTMLHighlightingParser.ImportNodeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#importNode}.
+	 * @param ctx the parse tree
+	 */
+	void exitImportNode(HTMLHighlightingParser.ImportNodeContext ctx);
 }

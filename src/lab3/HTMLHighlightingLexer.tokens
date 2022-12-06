@@ -1,1 +1,11 @@
-NAME=1
+T__0=1
+PACKAGE=2
+PACKAGE_END=3
+IMPORT=4
+NAME=5
+PACKAGE_NAME=6
+WS=7
+';'=1
+'package'=2
+'.*'=3
+'import'=4

@@ -104,7 +104,7 @@ class Parser {
             Token.NOT -> {
                 res.add(Terminal(token!!.char))
                 token = lex.nextToken()
-                res.add(E())
+                res.add(D())
                 res
             }
             Token.VARIABLE,Token.LPAREN -> {

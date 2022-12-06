@@ -16,4 +16,22 @@ public interface HTMLHighlightingVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStart(HTMLHighlightingParser.StartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLHighlightingParser#headerNode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitHeaderNode(HTMLHighlightingParser.HeaderNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLHighlightingParser#packageNode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPackageNode(HTMLHighlightingParser.PackageNodeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLHighlightingParser#importNode}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImportNode(HTMLHighlightingParser.ImportNodeContext ctx);
 }

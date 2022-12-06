@@ -1,0 +1,1 @@
+antlr4 -o C:\Users\Arsenii\Downloads\labs-translation-methods\src\lab3 -package lab3 -listener -visitor -lib C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3 C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4

@@ -15,7 +15,7 @@ import java.io.File
 
 
 fun main() {
-    val str = "(!a | b) & a & (a | !(b ^ c))"
+    val str = "!!a"
     val res = Parser().parse(str.byteInputStream())
     Visualizer().visualizeGraph(res)
 }
