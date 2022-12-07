@@ -48,6 +48,7 @@ class ParserTest {
     }
 
 
+
     @TestFactory
     fun simpleTest(): Collection<DynamicTest> {
         return correctExpression.map { pair ->

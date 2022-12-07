@@ -23,3 +23,13 @@ body{
     font-family: JetbrainsMono;
     color : #CC7832;
 }
+
+.keyword {
+    font-family: JetbrainsMono;
+    color : #CC7832;
+}
+
+.annotation {
+    font-family: JetbrainsMono;
+    color : #BBB529;
+}

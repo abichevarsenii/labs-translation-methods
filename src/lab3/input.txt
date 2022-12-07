@@ -1,4 +1,4 @@
-package lab3.yyyy.hjdsgck.hhh;
-
-import org.antlr.v4.runtime.dfa.DFA;
-import org.antlr.v4.runtime.*;
+@SuppressWarnings("all")
+public class HTMLHighlightingLexer extends Lexer {
+	protected static final DFA[] _decisionToDFA;
+}

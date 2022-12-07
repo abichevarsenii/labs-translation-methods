@@ -71,6 +71,7 @@ class Parser {
         }
     }
 
+    //fun
     fun C() : Node {
         val res = NonTerminal("C")
         return when(token){
@@ -81,6 +82,7 @@ class Parser {
             }
             else -> throw ParseException("Illegal character $token", lex.curPos())
         }
+
     }
 
     fun C1() : Node {

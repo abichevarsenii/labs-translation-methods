@@ -4,6 +4,7 @@ import org.antlr.v4.runtime.CharStreams
 import org.antlr.v4.runtime.CommonTokenStream
 import java.io.FileReader
 import java.io.FileWriter
+import java.lang.Character.isJavaIdentifierStart
 import javax.swing.text.html.HTML
 
 const val STYLE_PLACE = "STYLE_PLACE"
@@ -13,8 +14,10 @@ fun main() {
     val stream = CharStreams.fromFileName("src/lab3/input.txt")
     val lexer = HTMLHighlightingLexer(stream)
     val parser = HTMLHighlightingParser(CommonTokenStream(lexer))
+    parser.addParseListener(HTMLHighlightingBaseListener())
+    val visitor = HTMLHighlightingMyVisitor()
     val node = parser.start()
-
+    visitor.visit(node)
     val res = node.`val`
 
     var template = ""
