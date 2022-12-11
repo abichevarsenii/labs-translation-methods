@@ -73,6 +73,6 @@ public class Tools {
     }
 
     public static String getClass(String text, String name) {
-        return "<p class=\" " + name + "\">" + text + "</p>";
+        return "<div class=\" " + name + "\">" + text + "</div>";
     }
 }

@@ -100,11 +100,16 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitValue(HTMLHighlightingParser.ValueContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            for (ParseTree child : ctx.children) {
-                if (child instanceof TerminalNode) {
-                    res.append(child.getText() + " ");
-                } else {
-                    res.append(visit(child) + " ");
+            if (ctx.PRIMITIVE_VALUE() != null) {
+                System.out.println(ctx.PRIMITIVE_VALUE().getClass().toString());
+                res.append(Tools.getClass(ctx.PRIMITIVE_VALUE(), "comments"));
+            } else {
+                for (ParseTree child : ctx.children) {
+                    if (child instanceof TerminalNode) {
+                        res.append(child.getText() + " ");
+                    } else {
+                        res.append(visit(child) + " ");
+                    }
                 }
             }
             ctx.val = res.toString();
@@ -123,20 +128,24 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitDeclareVar(HTMLHighlightingParser.DeclareVarContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            res.append(Tools.getClass(ctx.MODIFIER(),"keyword")).append(" ");
-            res.append(Tools.getClass(visit(ctx.typeVar()),"simple")).append(" ");
+            res.append(Tools.getClass(ctx.MODIFIER(), "keyword")).append(" ");
+            res.append(Tools.getClass(visit(ctx.typeVar()), "simple")).append(" ");
             if (ctx.nameType().size() == 1) {
-                res.append( Tools.getClass(visit(ctx.nameType(0)),"simple")).append(" ");
-                res.append(Tools.getClass(checkVisit(ctx.ASSIGN(0)),"simple")).append(" ");
+                res.append(Tools.getClass(visit(ctx.nameType(0)), "simple")).append(" ");
+                res.append(Tools.getClass(checkVisit(ctx.ASSIGN(0)), "simple")).append(" ");
                 res.append(checkVisit(ctx.value(0)));
-                res.append(Tools.getClass(";","keyword")).append(" ");
+                res.append(Tools.getClass(";", "keyword")).append(" ");
             } else {
-                for (int i = 0; i < ctx.nameType().size(); i++) {
-                    res.append(visit(ctx.nameType(i))).append(" ");
-                    res.append(Tools.getClass(ctx.ASSIGN(i),"simple")).append(" ");
+                for (int i = 0; i < ctx.nameType().size()-1; i++) {
+                    res.append(Tools.getClass(visit(ctx.nameType(i)), "simple")).append(" ");
+                    res.append(Tools.getClass(ctx.ASSIGN(i), "simple")).append(" ");
                     res.append(checkVisit(ctx.value(i)));
+                    res.append(Tools.getClass(",", "keyword")).append(" ");
                 }
-                res.append(Tools.getClass(";","keyword")).append(" ");
+                res.append(Tools.getClass(visit(ctx.nameType(ctx.nameType().size()-1)), "simple")).append(" ");
+                res.append(Tools.getClass(ctx.ASSIGN(ctx.nameType().size()-1), "simple")).append(" ");
+                res.append(checkVisit(ctx.value(ctx.nameType().size()-1)));
+                res.append(Tools.getClass(";", "keyword")).append(" ");
             }
             ctx.val = res.toString();
         }
@@ -230,7 +239,7 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
                     res.append(visit(child));
                 }
             }
-            ctx.val =  Tools.getClass(res.toString(), "annotation") + Tools.nextLine();
+            ctx.val = Tools.getClass(res.toString(), "annotation") + Tools.nextLine();
         }
         //System.out.println(ctx.val);
         return ctx.val;
@@ -453,8 +462,8 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitExstends(HTMLHighlightingParser.ExstendsContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            res.append(Tools.getClass(ctx.EXTENDS(),"keyword")).append(" ");
-            res.append(Tools.getClass(visit(ctx.nameType()),"simple"));
+            res.append(Tools.getClass(ctx.EXTENDS(), "keyword")).append(" ");
+            res.append(Tools.getClass(visit(ctx.nameType()), "simple"));
             ctx.val = res.toString();
         }
         //System.out.println(ctx.val);
@@ -472,14 +481,14 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
             res.append(checkVisit(ctx.annotation())).append(" ");
-            res.append(Tools.getClass(ctx.MODIFIER(),"keyword")).append(" ");
-            res.append(Tools.getClass(ctx.CLASS(),"keyword")).append(" ");
-            res.append(Tools.getClass(checkVisit(ctx.nameType()),"simple")).append(" ");
+            res.append(Tools.getClass(ctx.MODIFIER(), "keyword")).append(" ");
+            res.append(Tools.getClass(ctx.CLASS(), "keyword")).append(" ");
+            res.append(Tools.getClass(checkVisit(ctx.nameType()), "simple")).append(" ");
             res.append(checkVisit(ctx.exstends())).append(" ");
             res.append(checkVisit(ctx.implements_())).append(" ");
-            res.append(Tools.getClass("{","simple")).append(Tools.nextLine());
-            res.append(Tools.tab()).append(visitList(ctx.bodyClass(),Tools.nextLine())).append(" ");
-            res.append(Tools.nextLine()).append(Tools.getClass("}","simple")).append(" ");
+            res.append(Tools.getClass("{", "simple")).append(Tools.nextLine());
+            res.append(Tools.tab()).append(visitList(ctx.bodyClass(), Tools.nextLine() + Tools.tab())).append(" ");
+            res.append(Tools.nextLine()).append(Tools.getClass("}", "simple")).append(" ");
 
         }
         ctx.val = res.toString();

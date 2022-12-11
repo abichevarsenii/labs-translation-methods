@@ -1,4 +1,18 @@
 @SuppressWarnings("all")
 public class HTMLHighlightingLexer extends Lexer {
 	protected static final DFA[] _decisionToDFA;
+
+	protected static final PredictionContextCache _sharedContextCache =
+    		new PredictionContextCache();
+    	public static final int
+    		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
+    		T__9=10, T__10=11, RETURN=12, CLASS=13, IMPLEMENTS=14, EXTENDS=15, FOR=16,
+    		IF=17, ELSE=18, THROWS=19, AT=20, NEW=21, ASSIGN=22, PRIMITIVE_VALUE=23,
+    		NULL=24, INT=25, FLOAT=26, STRING=27, CHAR=28, BOOLEAN=29, TRUE=30, FALSE=31,
+    		MODIFIER=32, PUBLIC=33, PRIVATE=34, FINAL=35, STATIC=36, VOLATILE=37,
+    		TRANSIENT=38, SYNCHRONIZED=39, NATIVE=40, ABSTRACT=41, PROTECTED=42, NAME=43,
+    		WS=44;
+    	public static String[] channelNames = {
+    		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
+    	};
 }

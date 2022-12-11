@@ -10,8 +10,22 @@ p {
     display: inline
 }
 
+div {
+    display: inline
+}
+
 body{
     background-color: #2B2B2B;
+}
+
+.comments {
+    font-family: JetbrainsMono;
+    color : #629755;
+}
+
+.value {
+    font-family: JetbrainsMono;
+    color : #6897BB;
 }
 
 .simple {
