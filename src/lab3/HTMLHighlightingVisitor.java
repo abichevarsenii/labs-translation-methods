@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -142,4 +142,10 @@ public interface HTMLHighlightingVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitBodyClass(HTMLHighlightingParser.BodyClassContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
 }

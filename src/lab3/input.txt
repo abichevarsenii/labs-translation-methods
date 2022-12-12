@@ -15,4 +15,39 @@ public class HTMLHighlightingLexer extends Lexer {
     	public static String[] channelNames = {
     		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
     	};
+
+        private static String[] makeRuleNames() {
+        		return new String[] {
+        			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8",
+        			"T__9", "T__10", "RETURN", "CLASS", "IMPLEMENTS", "EXTENDS", "FOR", "IF",
+        			"ELSE", "THROWS", "AT", "NEW", "ASSIGN", "NULL", "INT", "FLOAT", "STRING",
+        			"CHAR", "BOOLEAN", "TRUE", "FALSE", "MODIFIER", "PUBLIC", "PRIVATE",
+        			"FINAL", "STATIC", "VOLATILE", "TRANSIENT", "SYNCHRONIZED", "NATIVE",
+        			"ABSTRACT", "PROTECTED", "NAME", "WS"
+        		};
+        }
+
+        private static String[] makeLiteralNames() {
+        		return new String[] {
+        			null, null,
+        			null, null, null, null
+        		};
+        	}
+
+        public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
+
+        public static final String[] tokenNames() {
+        		tokenNames = new String[];
+        		for (int i = 0; i < tokenNames.length; i++) {
+        			tokenNames[i] = VOCABULARY.getLiteralName(i);
+        			if (tokenNames[i] == null) {
+        				tokenNames[i] = VOCABULARY.getSymbolicName(i);
+        			}
+
+        			if (tokenNames[i] == null) {
+        				tokenNames[i] = "INVALID";
+        			}
+        		}
+        		return tokenNames;
+        	}
 }

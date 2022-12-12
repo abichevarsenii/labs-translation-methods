@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -227,4 +227,14 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitBodyClass(HTMLHighlightingParser.BodyClassContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
 }

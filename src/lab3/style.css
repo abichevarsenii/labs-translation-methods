@@ -23,9 +23,19 @@ body{
     color : #629755;
 }
 
+.numbers {
+font-family: JetbrainsMono;
+    color : #6897BB
+}
+
 .value {
     font-family: JetbrainsMono;
     color : #6897BB;
+}
+
+.fields {
+    font-family: JetbrainsMono;
+    color : #9876AA
 }
 
 .simple {

@@ -38,6 +38,7 @@ public class Tools {
     }
 
     public static boolean isNotReservedWord(String s) {
+        if (s.equals("int")) return true;
         return !SourceVersion.isKeyword(s);
     }
 

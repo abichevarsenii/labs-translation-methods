@@ -18,13 +18,33 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
 
     public String checkVisit(TerminalNode ctx) {
         if (ctx != null) {
-            return visit(ctx);
+            return ctx.getText();
         }
         return "";
     }
 
     public <T extends ParserRuleContext> String visitList(List<T> list, String separator) {
         return list.stream().map(this::visit).collect(Collectors.joining(separator));
+    }
+
+    @Override
+    public String visitPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx) {
+        StringBuilder res = new StringBuilder();
+        if (ctx.children != null) {
+            String text = ctx.children.get(0).getText();
+            if (ctx.CHAR() != null || ctx.STRING() != null){
+                res.append(Tools.getClass(text,"comments"));
+            }
+            if (ctx.INT() != null || ctx.FLOAT() != null){
+                res.append(Tools.getClass(text,"numbers"));
+            }
+            if (ctx.NULL() != null || ctx.BOOLEAN() != null){
+                res.append(Tools.getClass(text,"keyword"));
+            }
+            ctx.val = res.toString();
+        }
+        //System.out.println(ctx.val);
+        return ctx.val;
     }
 
     @Override
@@ -100,23 +120,25 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitValue(HTMLHighlightingParser.ValueContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            if (ctx.PRIMITIVE_VALUE() != null) {
-                System.out.println(ctx.PRIMITIVE_VALUE().getClass().toString());
-                res.append(Tools.getClass(ctx.PRIMITIVE_VALUE(), "comments"));
+            if (ctx.NEW() != null){
+                res.append(Tools.getClass(ctx.NEW(),"keyword")).append(" ");
+                res.append(checkVisit(ctx.typeVar())).append(" ");
+                res.append(checkVisit(ctx.value(0))).append(" ");
             } else {
                 for (ParseTree child : ctx.children) {
                     if (child instanceof TerminalNode) {
-                        res.append(child.getText() + " ");
+                        res.append(child.getText()).append(" ");
                     } else {
-                        res.append(visit(child) + " ");
+                        res.append(visit(child)).append(" ");
                     }
                 }
             }
-            ctx.val = res.toString();
+            ctx.val = Tools.getClass(res.toString(),"simple");
         }
         //System.out.println(ctx.val);
         return ctx.val;
     }
+
 
     /**
      * Visit a parse tree produced by {@link HTMLHighlightingParser#declareVar}.
@@ -128,7 +150,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitDeclareVar(HTMLHighlightingParser.DeclareVarContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            res.append(Tools.getClass(ctx.MODIFIER(), "keyword")).append(" ");
             res.append(Tools.getClass(visit(ctx.typeVar()), "simple")).append(" ");
             if (ctx.nameType().size() == 1) {
                 res.append(Tools.getClass(visit(ctx.nameType(0)), "simple")).append(" ");
@@ -163,12 +184,25 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
     public String visitDeclareField(HTMLHighlightingParser.DeclareFieldContext ctx) {
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            for (ParseTree child : ctx.children) {
-                if (child instanceof TerminalNode) {
-                    res.append(child.getText() + " ");
-                } else {
-                    res.append(visit(child) + " ");
+            res.append(visitList(ctx.annotation(), " ")).append(" ");
+            res.append(Tools.getClass(ctx.MODIFIER(), "keyword")).append(" ");
+            res.append(Tools.getClass(visit(ctx.typeVar()), "simple")).append(" ");
+            if (ctx.nameType().size() == 1) {
+                res.append(Tools.getClass(visit(ctx.nameType(0)), "fields")).append(" ");
+                res.append(Tools.getClass(checkVisit(ctx.ASSIGN(0)) , "simple")).append(" ");
+                res.append(checkVisit(ctx.value(0)));
+                res.append(Tools.getClass(";", "keyword")).append(" ");
+            } else {
+                for (int i = 0; i < ctx.nameType().size()-1; i++) {
+                    res.append(Tools.getClass(visit(ctx.nameType(i)), "fields")).append(" ");
+                    res.append(Tools.getClass(checkVisit(ctx.ASSIGN(i)), "simple")).append(" ");
+                    res.append(checkVisit(ctx.value(i)));
+                    res.append(Tools.getClass(",", "keyword")).append(" ");
                 }
+                res.append(Tools.getClass(visit(ctx.nameType(ctx.nameType().size()-1)), "fields")).append(" ");
+                res.append(Tools.getClass(ctx.ASSIGN(ctx.nameType().size()-1), "simple")).append(" ");
+                res.append(checkVisit(ctx.value(ctx.nameType().size()-1)));
+                res.append(Tools.getClass(";", "keyword")).append(" ");
             }
             ctx.val = res.toString();
         }
@@ -299,15 +333,23 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
      */
     @Override
     public String visitFunction(HTMLHighlightingParser.FunctionContext ctx) {
+        //annotation* MODIFIER* typeVar nameType'(' (arg(','arg)*)? ')' exeptions? '{' bodyFunction? returnFunction? '}';
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
-            for (ParseTree child : ctx.children) {
+            res.append(visitList(ctx.annotation(), " ") );
+            res.append(Tools.getClass(ctx.MODIFIER(), "keyword") );
+            res.append(Tools.getClass(visit(ctx.nameType()), "simple"));
+            for (int i = 0; i < ctx.arg().size(); i++) {
+                res.append(Tools.getClass(visit(ctx.arg(i)), "simple"));
+                res.append(Tools.getClass(", ", "keyword"));
+            }
+           /* for (ParseTree child : ctx.children) {
                 if (child instanceof TerminalNode) {
                     res.append(child.getText() + " ");
                 } else {
                     res.append(visit(child) + " ");
                 }
-            }
+            }*/
             ctx.val = res.toString();
         }
         //System.out.println(ctx.val);
@@ -331,7 +373,7 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
                     res.append(visit(child) + " ");
                 }
             }
-            ctx.val = res.toString();
+            ctx.val = Tools.getClass(res.toString(),"simple") ;
         }
         //System.out.println(ctx.val);
         return ctx.val;
