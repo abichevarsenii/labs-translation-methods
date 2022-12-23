@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/Downloads/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
+// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
 package lab3;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -38,6 +38,26 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitTypeVar(HTMLHighlightingParser.TypeVarContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrimitiveType(HTMLHighlightingParser.PrimitiveTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#primitiveType}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrimitiveType(HTMLHighlightingParser.PrimitiveTypeContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#value}.
 	 * @param ctx the parse tree
 	 */
@@ -47,6 +67,16 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitValue(HTMLHighlightingParser.ValueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void enterTerm(HTMLHighlightingParser.TermContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#term}.
+	 * @param ctx the parse tree
+	 */
+	void exitTerm(HTMLHighlightingParser.TermContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#declareVar}.
 	 * @param ctx the parse tree
@@ -88,6 +118,16 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitCallMethod(HTMLHighlightingParser.CallMethodContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void enterFunction(HTMLHighlightingParser.FunctionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#function}.
+	 * @param ctx the parse tree
+	 */
+	void exitFunction(HTMLHighlightingParser.FunctionContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#annotation}.
 	 * @param ctx the parse tree
 	 */
@@ -118,16 +158,6 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitExeptions(HTMLHighlightingParser.ExeptionsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#function}.
-	 * @param ctx the parse tree
-	 */
-	void enterFunction(HTMLHighlightingParser.FunctionContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#function}.
-	 * @param ctx the parse tree
-	 */
-	void exitFunction(HTMLHighlightingParser.FunctionContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#bodyFunction}.
 	 * @param ctx the parse tree
 	 */
@@ -148,35 +178,15 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitReturnFunction(HTMLHighlightingParser.ReturnFunctionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#ifStatement}.
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#class}.
 	 * @param ctx the parse tree
 	 */
-	void enterIfStatement(HTMLHighlightingParser.IfStatementContext ctx);
+	void enterClass(HTMLHighlightingParser.ClassContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#ifStatement}.
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#class}.
 	 * @param ctx the parse tree
 	 */
-	void exitIfStatement(HTMLHighlightingParser.IfStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#elseStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterElseStatement(HTMLHighlightingParser.ElseStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#elseStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitElseStatement(HTMLHighlightingParser.ElseStatementContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#castStatement}.
-	 * @param ctx the parse tree
-	 */
-	void enterCastStatement(HTMLHighlightingParser.CastStatementContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#castStatement}.
-	 * @param ctx the parse tree
-	 */
-	void exitCastStatement(HTMLHighlightingParser.CastStatementContext ctx);
+	void exitClass(HTMLHighlightingParser.ClassContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#implements}.
 	 * @param ctx the parse tree
@@ -198,16 +208,6 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitExstends(HTMLHighlightingParser.ExstendsContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#class}.
-	 * @param ctx the parse tree
-	 */
-	void enterClass(HTMLHighlightingParser.ClassContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#class}.
-	 * @param ctx the parse tree
-	 */
-	void exitClass(HTMLHighlightingParser.ClassContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link HTMLHighlightingParser#constructor}.
 	 * @param ctx the parse tree
 	 */
@@ -228,13 +228,73 @@ public interface HTMLHighlightingListener extends ParseTreeListener {
 	 */
 	void exitBodyClass(HTMLHighlightingParser.BodyClassContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#castStatement}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
+	void enterCastStatement(HTMLHighlightingParser.CastStatementContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HTMLHighlightingParser#primitiveValue}.
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#castStatement}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimitiveValue(HTMLHighlightingParser.PrimitiveValueContext ctx);
+	void exitCastStatement(HTMLHighlightingParser.CastStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterIfStatement(HTMLHighlightingParser.IfStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#ifStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitIfStatement(HTMLHighlightingParser.IfStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElseStatement(HTMLHighlightingParser.ElseStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#elseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElseStatement(HTMLHighlightingParser.ElseStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#forStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterForStatement(HTMLHighlightingParser.ForStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#forStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitForStatement(HTMLHighlightingParser.ForStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#switchStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterSwitchStatement(HTMLHighlightingParser.SwitchStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#switchStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitSwitchStatement(HTMLHighlightingParser.SwitchStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#caseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterCaseStatement(HTMLHighlightingParser.CaseStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#caseStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitCaseStatement(HTMLHighlightingParser.CaseStatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HTMLHighlightingParser#defaultStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterDefaultStatement(HTMLHighlightingParser.DefaultStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HTMLHighlightingParser#defaultStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitDefaultStatement(HTMLHighlightingParser.DefaultStatementContext ctx);
 }

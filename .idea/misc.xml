@@ -6,10 +6,20 @@
         <PerGrammarGenerationSettings>
           <option name="fileName" value="$PROJECT_DIR$/src/lab3/HTMLHighlighting.g4" />
           <option name="autoGen" value="true" />
-          <option name="outputDir" value="C:\Users\Arsenii\Downloads\labs-translation-methods\src" />
+          <option name="outputDir" value="C:\Users\Arsenii\labs-translation-methods\src" />
           <option name="libDir" value="" />
           <option name="encoding" value="" />
           <option name="pkg" value="" />
+          <option name="language" value="" />
+          <option name="generateVisitor" value="true" />
+        </PerGrammarGenerationSettings>
+        <PerGrammarGenerationSettings>
+          <option name="fileName" value="$PROJECT_DIR$/src/lab4/analyzers/grammarParser/rules.g4" />
+          <option name="autoGen" value="true" />
+          <option name="outputDir" value="C:\Users\Arsenii\labs-translation-methods\src\" />
+          <option name="libDir" value="" />
+          <option name="encoding" value="" />
+          <option name="pkg" value="lab4.analyzers.grammarParser" />
           <option name="language" value="" />
           <option name="generateVisitor" value="true" />
         </PerGrammarGenerationSettings>

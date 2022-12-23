@@ -17,6 +17,7 @@ fun main() {
     parser.addParseListener(HTMLHighlightingBaseListener())
     val visitor = HTMLHighlightingMyVisitor()
     val node = parser.start()
+    Tools.resetTab()
     visitor.visit(node)
     val res = node.`val`
 

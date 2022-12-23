@@ -1,53 +1,31 @@
 @SuppressWarnings("all")
 public class HTMLHighlightingLexer extends Lexer {
-	protected static final DFA[] _decisionToDFA;
 
-	protected static final PredictionContextCache _sharedContextCache =
-    		new PredictionContextCache();
-    	public static final int
-    		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
-    		T__9=10, T__10=11, RETURN=12, CLASS=13, IMPLEMENTS=14, EXTENDS=15, FOR=16,
-    		IF=17, ELSE=18, THROWS=19, AT=20, NEW=21, ASSIGN=22, PRIMITIVE_VALUE=23,
-    		NULL=24, INT=25, FLOAT=26, STRING=27, CHAR=28, BOOLEAN=29, TRUE=30, FALSE=31,
-    		MODIFIER=32, PUBLIC=33, PRIVATE=34, FINAL=35, STATIC=36, VOLATILE=37,
-    		TRANSIENT=38, SYNCHRONIZED=39, NATIVE=40, ABSTRACT=41, PROTECTED=42, NAME=43,
-    		WS=44;
-    	public static String[] channelNames = {
-    		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
-    	};
+       @Override
+           public String visitIfStatement(HTMLHighlightingParser.IfStatementContext ctx) {
+               switch ( adaptivePredict(_input,2,_ctx) ) {
+               			case 1:
+               				setState(67);
+               				nameType();
+               				break;
+               			case 2:
+               				setState(68);
+               				nameType();
+               				setState(69);
+               				match(LESS);
+               				setState(70);
+               				typeVar(0);
+               				setState(71);
+               				match(MORE_);
+               				break;
+               			case 3:
+                             setState(68);
 
-        private static String[] makeRuleNames() {
-        		return new String[] {
-        			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8",
-        			"T__9", "T__10", "RETURN", "CLASS", "IMPLEMENTS", "EXTENDS", "FOR", "IF",
-        			"ELSE", "THROWS", "AT", "NEW", "ASSIGN", "NULL", "INT", "FLOAT", "STRING",
-        			"CHAR", "BOOLEAN", "TRUE", "FALSE", "MODIFIER", "PUBLIC", "PRIVATE",
-        			"FINAL", "STATIC", "VOLATILE", "TRANSIENT", "SYNCHRONIZED", "NATIVE",
-        			"ABSTRACT", "PROTECTED", "NAME", "WS"
-        		};
-        }
+                        default:
+                            setState(71);
+                           };
+           }
 
-        private static String[] makeLiteralNames() {
-        		return new String[] {
-        			null, null,
-        			null, null, null, null
-        		};
-        	}
 
-        public static final Vocabulary VOCABULARY = new VocabularyImpl(_LITERAL_NAMES, _SYMBOLIC_NAMES);
 
-        public static final String[] tokenNames() {
-        		tokenNames = new String[];
-        		for (int i = 0; i < tokenNames.length; i++) {
-        			tokenNames[i] = VOCABULARY.getLiteralName(i);
-        			if (tokenNames[i] == null) {
-        				tokenNames[i] = VOCABULARY.getSymbolicName(i);
-        			}
-
-        			if (tokenNames[i] == null) {
-        				tokenNames[i] = "INVALID";
-        			}
-        		}
-        		return tokenNames;
-        	}
 }

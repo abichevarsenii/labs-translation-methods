@@ -1,0 +1,16 @@
+T__0=1
+T__1=2
+T__2=3
+MEMBER=4
+NODE_CONTEXT=5
+TOKEN_NAME=6
+RULE_NAME=7
+CODE=8
+SEMANTIC_RULE=9
+LITERAL=10
+WS=11
+':'=1
+'|'=2
+';'=3
+'@member'=4
+'@node'=5

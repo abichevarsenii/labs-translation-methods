@@ -10,12 +10,24 @@ import java.util.stream.Collectors;
 import javax.lang.model.SourceVersion;
 
 public class Tools {
+    private static int tabLevel = 0;
 
-    public static String WS = " ";
-    public static String TAB = "\t";
+    public static void resetTab() {
+        tabLevel = 0;
+    }
+
+    public static void upTab() {
+        tabLevel++;
+    }
+
+    public static void downTab() {
+        tabLevel--;
+    }
+
     public static String joinTerminals(List<TerminalNode> list) {
         return joinTerminals(list, " ");
     }
+
     public static String joinTerminals(List<TerminalNode> list, String separator) {
         if (list.isEmpty()) {
             return "";
@@ -23,22 +35,7 @@ public class Tools {
         return list.stream().map(ParseTree::getText).collect(Collectors.joining(separator));
     }
 
-    public static <T extends HTMLHighlightingParser.ConstructorContext> void  processed(T ctx) {
-        StringBuilder res = new StringBuilder();
-        if (ctx.children != null) {
-            for (ParseTree child : ctx.children) {
-                if (child instanceof TerminalNode) {
-                    res.append(child.getText());
-                } else {
-                    //res.append(((Tools.IValable) child).val);
-                }
-            }
-            ctx.val = res.toString();
-        }
-    }
-
     public static boolean isNotReservedWord(String s) {
-        if (s.equals("int")) return true;
         return !SourceVersion.isKeyword(s);
     }
 
@@ -51,18 +48,11 @@ public class Tools {
     }
 
     public static String tab() {
-        return tab(4);
+        return tab(2);
     }
+
     public static String tab(int count) {
-        return String.join("", Collections.nCopies(count, "&nbsp"));
-    }
-
-    public static String getPackage(String name) {
-        return getClass("package", "var") + " " + getClass(name, "simple") + getClass(";", "var") + nextLine();
-    }
-
-    public static String getImport(String name) {
-        return getClass("import", "var") + " " + getClass(name, "simple") + getClass(";", "var") + nextLine();
+        return String.join("", Collections.nCopies(count * tabLevel, "&nbsp"));
     }
 
     public static String getClass(List<TerminalNode> list, String type) {

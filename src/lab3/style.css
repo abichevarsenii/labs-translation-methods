@@ -53,6 +53,11 @@ font-family: JetbrainsMono;
     color : #CC7832;
 }
 
+.function {
+    font-family: JetbrainsMono;
+    color : #FFC66D;
+}
+
 .annotation {
     font-family: JetbrainsMono;
     color : #BBB529;

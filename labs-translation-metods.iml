@@ -47,5 +47,6 @@
       </library>
     </orderEntry>
     <orderEntry type="library" name="jsoup" level="project" />
+    <orderEntry type="library" name="squareup.kotlinpoet" level="project" />
   </component>
 </module>
