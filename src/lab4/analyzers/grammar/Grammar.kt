@@ -4,17 +4,19 @@ class Grammar(
     var name: String? = null,
     var header: String? = null,
     var members: String? = null,
-    var nodeContext: String? = null,
+    var returnType : String? = null,
+    var returnValue : String? = null,
     var states: MutableList<State> = mutableListOf(),
     var tokens: MutableList<StateToken> = mutableListOf()
 ) {
     class StateToken(var name: String? = null, var regex: String? = null)
-    class Item(var name: String? = null, var code: String? = null)
+    class Item(var name: String? = null, var code: String? = null, var arg : String? = null)
     class Rule(var items: MutableList<Item> = mutableListOf()) {
         fun addItem(item: Item) = items.plusAssign(item)
     }
     class State(
         var name: String? = null,
+        var args : List<String> = emptyList(),
         var context : String? = null,
         var rules: MutableList<Rule> = mutableListOf()
     ) {
@@ -65,33 +67,52 @@ class Grammar(
     }
 
     fun buildFollow(): MutableMap<String, MutableSet<String>> {
+        var changed: Boolean = true
         this.states.forEach {
             FOLLOW[it.name!!] = mutableSetOf()
         }
-        FOLLOW[this.states[0].name!!]!! += "EOF"
+        states.firstOrNull()?.let {
+            FOLLOW[it.name]!!.add("EOF")
+        }
 
-        var changed: Boolean
-        do {
+
+        while (changed) {
             changed = false
-            for (state in this.states) {
-                state.rules.forEach { rule ->
-                    rule.items.forEachIndexed { index, a ->
-                        val maybeState: State? = this.states.find { it.name == a.name }
 
-                        if (maybeState != null) {
-                            val size = FOLLOW[a.name]!!.size
+            for (nonTerm in states) {
+                for (nonTermRules in nonTerm.rules) {
+                    val stateSize = nonTermRules.items.size
+                    for (index in nonTermRules.items.indices) {
+                        val b = nonTermRules.items[index].name
 
-                            state.rules.forEach { rule ->
-                                val gamma = getFirst(rule.items.drop(index + 1).toMutableList())
-                                FOLLOW[a.name]!! += (gamma - "EPS").toList()
-                                if ("EPS" in gamma) FOLLOW[a.name]!! += FOLLOW[state.name]!!
-                                changed = changed || (size != FOLLOW[a.name]!!.size)
+                        if (b != "EPS" && tokens.find { it.name == b } == null) {
+                            val gamma = if (index == stateSize - 1) "EPS"
+                            else nonTermRules.items[index + 1].name
+
+                            val pushedData = mutableListOf<String>()
+                            if (gamma != "EPS") {
+                                if (tokens.find { it.name == gamma } != null) {
+                                    pushedData.add(gamma!!)
+                                } else {
+                                    pushedData.addAll(FIRST[gamma]!!)
+                                }
+                            } else {
+                                pushedData.add("EPS")
                             }
+                            if (pushedData.contains("EPS")) {
+                                pushedData.addAll(FOLLOW[nonTerm.name]!!)
+                            }
+                            pushedData.removeAll { it == "EPS" }
+
+                            val sizeBefore = FOLLOW[b]!!.size
+                            FOLLOW[b]!!.addAll(pushedData)
+
+                            changed = changed || (sizeBefore != FOLLOW[b]!!.size)
                         }
                     }
                 }
             }
-        } while (changed)
+        }
 
         return FOLLOW
     }

@@ -1,108 +1,434 @@
 grammar HTMLHighlighting;
 
-start returns [String val] : class;
 
-nameType returns [String val] : primitiveType | { Tools.isNotReservedWord(_input.LT(1).getText()) }? NAME(('.')NAME)*;
-typeVar returns [String val] : nameType | nameType'<'typeVar'>' | typeVar '[' value? ']';
+compilationUnit
+    :   packageDeclaration? importDeclaration* typeDeclaration* EOF
+    ;
 
-primitiveValue returns [String val] : INT | FLOAT | STRING | CHAR | BOOLEAN | NULL;
-primitiveType returns [String val] : INT_TYPE | FLOAT_TYPE | CHAR_TYPE | BOOLEAN_TYPE | VOID_TYPE;
-value returns [String val] : primitiveValue | callMethod | NEW typeVar? value? | callMethod('.'value)* | nameType('.'value)* | '{' value(',' value)* '}';
-term returns [String val] :  term BINARY_OPERATOR term | UNARY_OPERATOR term | term UNARY_OPERATOR | value;
+packageDeclaration
+    :   'package' qualifiedName ';'
+    ;
 
-declareVar returns [String val] : typeVar nameType ';' | MODIFIER* typeVar (nameType ASSIGN value)(','nameType ASSIGN value)*;
-declareField returns [String val] : annotation* MODIFIER+ typeVar nameType ';' | MODIFIER* typeVar (nameType ASSIGN value)(','nameType ASSIGN value)* ';';
+importDeclaration
+    :   'import' ('static')? qualifiedName ('.' '*')? ';'
+    ;
 
-assignVar returns [String val] : nameType ASSIGN value;
+typeDeclaration
+    :   classDeclaration
+    |   interfaceDeclaration
+    |   ';'
+    ;
 
-callMethod returns [String val] : nameType'('')' | nameType'(' (nameType|callMethod|value)(','(nameType|callMethod|value))* ')';
+classDeclaration
+    :   ('abstract' | 'final' | 'strictfp')* 'class' IDENTIFIER ('extends' type)? ('implements' typeList)? classBody
+    ;
 
-function returns [String val] : annotation* MODIFIER* typeVar nameType'(' (arg(','arg)*)? ')' exeptions? '{' bodyFunction* returnFunction? '}';
-annotation returns [String val] : AT callMethod | AT nameType;
-arg returns [String val] : typeVar nameType;
-exeptions returns [String val] : THROWS nameType(','nameType)*;
-bodyFunction returns [String val] : (declareVar | assignVar | callMethod | function | ifStatement | forStatement | switchStatement)';';
-returnFunction returns [String val] : RETURN value ';';
+interfaceDeclaration
+    :   ('abstract' | 'strictfp')* 'interface' IDENTIFIER ('extends' typeList)? interfaceBody
+    ;
 
-class returns [String val] : annotation? MODIFIER* CLASS nameType exstends? implements? '{' bodyClass* '}';
-implements returns [String val] : IMPLEMENTS nameType(','nameType)*;
-exstends returns [String val] : EXTENDS nameType;
-constructor returns [String val] : annotation* MODIFIER? nameType'(' (arg(','arg)*)? ')' exeptions? '{' bodyFunction* '}';
-bodyClass returns [String val] : constructor | declareField | callMethod | function | class | ifStatement | forStatement';';
+classBody
+    :   '{' classBodyDeclaration* '}'
+    ;
 
-castStatement returns [String val] : '('typeVar')' callMethod;
+interfaceBody
+    :   '{' interfaceMemberDeclaration* '}'
+    ;
 
-ifStatement returns [String val] : IF '(' (callMethod|term) ')' '{' bodyFunction '}' elseStatement? | IF'('callMethod')' bodyFunction elseStatement?;
-elseStatement returns [String val] : ELSE '{' bodyFunction '}';
+interfaceMemberDeclaration
+    :   constantDeclaration
+    |   abstractMethodDeclaration
+    |   classDeclaration
+    |   interfaceDeclaration
+    ;
 
-forStatement returns [String val] : (FOR'(' (declareVar | assignVar) ';' (callMethod|term) ';' (callMethod|term) ')') ('{' bodyFunction* '}' | bodyFunction?);
+constantDeclaration
+    :   type variableDeclaratorList ';'
+    ;
 
-switchStatement returns [String val] : SWITCH '(' callMethod ')' '{' caseStatement* defaultStatement? '}';
-caseStatement returns [String val] : CASE value ':' bodyFunction* (BREAK ';')?;
-defaultStatement returns [String val] : DEFAULT ':' bodyFunction*;
+abstractMethodDeclaration
+    :   ('abstract' | 'default' | 'static' | 'strictfp')* type IDENTIFIER '(' formalParameterList? ')' ';'
+    ;
 
-BREAK : 'break' ;
-CASE  : 'case';
-DEFAULT  : 'default';
-SWITCH : 'switch';
-RETURN : 'return';
-CLASS : 'class';
-IMPLEMENTS : 'implements';
-EXTENDS : 'extends';
-FOR : 'for';
-IF : 'if';
-ELSE : 'else';
-THROWS : 'throws';
-AT : '@';
-NEW : 'new';
-ASSIGN : '=';
 
-NULL : 'null';
-INT : [0-9]+;
-FLOAT : [0-9]+.[0-9]+;
-STRING : '"'[a-zA-Z_0-9.]*'"';
-CHAR : '\''[a-zA-Z_0-9]'\'';
-BOOLEAN : TRUE | FALSE;
-TRUE : 'true';
-FALSE : 'false';
+classBodyDeclaration
+    :   ';'
+    |   ('static')? block
+    |   memberDeclaration
+    ;
 
-BINARY_OPERATOR : PLUS | MINUS | MULTIPLY | DIVIDE | MOD | EQUAL | NOT_EQUAL | LESS | LESS_OR_EQUAL | MORE_ | MORE_OR_EQUAL | AND | OR | NOT;
+memberDeclaration
+    :   fieldDeclaration
+    |   methodDeclaration
+    |   classDeclaration
+    |   interfaceDeclaration
+    ;
 
-PLUS : '+';
-MINUS : '-';
-MULTIPLY : '*';
-DIVIDE : '/';
-MOD : '%';
-AND : '&&';
-OR : '||';
-NOT : '!';
-EQUAL : '==';
-NOT_EQUAL : '!=';
-LESS : '<';
-LESS_OR_EQUAL : '<=';
-MORE_ : '>';
-MORE_OR_EQUAL : '>=';
+fieldDeclaration
+    :   type variableDeclaratorList ';'
+    ;
 
-UNARY_OPERATOR : PLUS PLUS | MINUS MINUS | NOT;
+methodDeclaration
+    :   ('abstract' | 'final' | 'native' | 'static' | 'strictfp' | 'synchronized')* type IDENTIFIER '(' formalParameterList? ')' ('throws' qualifiedNameList)? ('{' blockStatement* '}' | ';')
+    ;
 
-MODIFIER : PUBLIC | PRIVATE | FINAL | STATIC | VOLATILE | TRANSIENT | SYNCHRONIZED | NATIVE | ABSTRACT | PROTECTED;
+variableDeclaratorList
+    :   variableDeclarator (',' variableDeclarator)*
+    ;
 
-PUBLIC : 'public';
-PRIVATE : 'private';
-FINAL : 'final';
-STATIC : 'static';
-VOLATILE : 'volatile';
-TRANSIENT : 'transient';
-SYNCHRONIZED : 'synchronized';
-NATIVE : 'native';
-ABSTRACT : 'abstract';
-PROTECTED : 'protected';
+formalParameterList
+    :   lastFormalParameter (',' formalParameter)*
+    |   formalParameter (',' formalParameter)*
+    ;
 
-INT_TYPE : 'int';
-FLOAT_TYPE : 'float';
-CHAR_TYPE : 'char';
-BOOLEAN_TYPE : 'boolean';
-VOID_TYPE : 'void';
+    localVariableDeclaration
+        :   type variableDeclaratorList
+        ;
 
-NAME : [a-zA-Z_][a-zA-Z_0-9]*;
-WS: [ \t\r\n]+ -> channel(HIDDEN);
+variableDeclarator
+    :   variableDeclaratorId ('=' variableInitializer)?
+    ;
+
+variableDeclaratorId
+    :   IDENTIFIER ('[' ']')*
+    ;
+
+formalParameter
+    :   type variableDeclaratorId
+    ;
+
+lastFormalParameter
+    :   type variableDeclaratorId ',' '...' variableDeclaratorId
+    ;
+
+type
+    :   primitiveType
+    |   qualifiedName
+    |   '?' (('extends' | 'super') type)?
+    ;
+
+typeList
+    :   type (',' type)*
+    ;
+
+qualifiedNameList
+    :   qualifiedName (',' qualifiedName)*
+    ;
+
+block
+    :   '{' blockStatement* '}'
+    ;
+
+blockStatement
+    :   block
+    |   ';'
+    |   expression ';'
+    |   'if' '(' expression ')' blockStatement ('else' blockStatement)?
+    |   'for' '(' (forInit)? ';' (expression)? ';' (expressionList)? ')' blockStatement
+    |   'while' '(' expression ')' blockStatement
+    |   'do' blockStatement 'while' '(' expression ')' ';'
+    |   'try' block (catches | catchesFinally)
+    |   'switch' '(' expression ')' '{' switchBlockStatementGroup* '}'
+    |   'synchronized' '(' expression ')' block
+    |   'return' (expression)? ';'
+    |   'throw' expression ';'
+    |   'break' (IDENTIFIER)? ';'
+    |   'continue' (IDENTIFIER)? ';'
+    |   'assert' expression (':' expression)? ';'
+    ;
+
+    catches
+        :   'catch' '(' catchType variableDeclaratorId ')' block
+        ;
+
+    catchesFinally
+        :   catches+ 'finally' block
+        |   'finally' block
+        ;
+
+    catchType
+        :   qualifiedName ('|' qualifiedName)*
+        ;
+
+    switchBlock
+        :   '{' switchBlockStatementGroup* switchLabel* '}'
+        ;
+
+    switchBlockStatementGroup
+        :   switchLabel+ block
+        ;
+
+    switchLabel
+        :   'case' constantExpression ':'
+        |   'default' ':'
+        ;
+
+    forInit
+        :   localVariableDeclaration
+        |   expressionList
+        ;
+
+    expressionList
+        :   expression (',' expression)*
+        ;
+
+    constantExpression
+        :   expression
+        ;
+
+    expression
+        :   assignmentExpression
+        ;
+
+    assignmentExpression
+        :   conditionalExpression
+        |   assignment
+        ;
+
+    assignment
+        :   leftHandSide assignmentOperator assignmentExpression
+        ;
+
+    leftHandSide
+        :   expressionName
+        |   fieldAccess
+        |   arrayAccess
+        ;
+
+    assignmentOperator
+        :   '=' | '*=' | '/=' | '%=' | '+=' | '-=' | '<<=' | '>>=' | '>>>=' | '&=' | '^=' | '|='
+        ;
+
+    conditionalExpression
+        :   conditionalOrExpression ('?' expression ':' conditionalExpression)?
+        ;
+
+    conditionalOrExpression
+        :   conditionalAndExpression ('||' conditionalAndExpression)*
+        ;
+
+    conditionalAndExpression
+        :   inclusiveOrExpression ('&&' inclusiveOrExpression)*
+        ;
+
+    inclusiveOrExpression
+        :   exclusiveOrExpression ('|' exclusiveOrExpression)*
+        ;
+
+    exclusiveOrExpression
+        :   andExpression ('^' andExpression)*
+        ;
+
+    andExpression
+        :   equalityExpression ('&' equalityExpression)*
+        ;
+
+    equalityExpression
+        :   relationalExpression (('==' | '!=') relationalExpression)*
+        ;
+
+    relationalExpression
+        :   shiftExpression (('<=' | '>=' | '<' | '>') shiftExpression)*
+        ;
+
+    shiftExpression
+        :   additiveExpression (('<<' | '>>' | '>>>') additiveExpression)*
+        ;
+
+    additiveExpression
+        :   multiplicativeExpression (('+' | '-') multiplicativeExpression)*
+        ;
+
+    multiplicativeExpression
+        :   unaryExpression (('*' | '/' | '%') unaryExpression)*;
+
+
+        preIncrementExpression
+            :   '++' unaryExpression
+            ;
+
+        preDecrementExpression
+            :   '--' unaryExpression
+            ;
+
+        unaryExpression
+            :   primary
+            |   '(' type ')' unaryExpressionNotPlusMinus
+            ;
+
+        unaryExpressionNotPlusMinus
+            :   postfixExpression
+            |   '(' type ')' unaryExpression
+            ;
+
+        primary
+            :   literal
+            |   'this'
+            |   '(' expression ')'
+            |   classInstanceCreationExpression
+            |   arrayCreationExpression
+            |   postfixExpression '.' IDENTIFIER
+            |   postfixExpression '[' expression ']'
+            |   postfixExpression '++'
+            |   postfixExpression '--'
+            ;
+
+
+
+        primaryNoNewArray
+            :   literal
+            |   'this'
+            |   '(' expression ')'
+            |   classInstanceCreationExpression
+            |   fieldAccess
+            |   methodInvocation
+            |   arrayAccess
+            ;
+
+        fieldAccess
+            :   primary '.' IDENTIFIER
+            ;
+
+        methodInvocation
+            :   primary '.' IDENTIFIER '(' argumentList? ')'
+            |   typeName '.' IDENTIFIER '(' argumentList? ')'
+            |   IDENTIFIER '(' argumentList? ')'
+            ;
+
+        arrayAccess
+            :   expressionName '[' expression ']'
+            |   primaryNoNewArray '[' expression ']'
+            ;
+
+        postfixExpression
+            :   primary
+            |   expressionName
+            |   postfixExpression '++'
+            |   postfixExpression '--'
+            ;
+
+        literal
+            :   INT_LITERAL
+            |   LONG_LITERAL
+            |   FLOAT_LITERAL
+            |   DOUBLE_LITERAL
+            |   CHAR_LITERAL
+            |   STRING_LITERAL
+            |   'true'
+            |   'false'
+            |   'null'
+            ;
+
+        classInstanceCreationExpression
+            :   'new' type '(' argumentList? ')' classBody?
+            ;
+
+        argumentList
+            :   expression (',' expression)*
+            ;
+
+
+        expressionName
+            :   IDENTIFIER
+            ;
+
+        arrayCreationExpression
+            :   'new' primitiveType dimExprs dims?
+            |   'new' classOrInterfaceType dimExprs dims?
+            |   'new' type dimExprs arrayInitializer
+            ;
+
+        dimExprs
+            :   dimExpr+
+            ;
+
+        dimExpr
+            :   '[' expression ']'
+            ;
+
+        dims
+            :   '[' ']'+
+            ;
+
+        arrayInitializer
+            :   '{' variableInitializerList? ','? '}'
+            ;
+
+
+variableInitializerList
+    :   variableInitializer (',' variableInitializer)*
+    ;
+
+variableInitializer
+    :   expression
+    |   arrayInitializer
+    ;
+
+primitiveType
+    :   'boolean'
+    |   'char'
+    |   'byte'
+    |   'short'
+    |   'int'
+    |   'long'
+    |   'float'
+    |   'double'
+    ;
+
+qualifiedName
+    :   IDENTIFIER ('.' IDENTIFIER)*
+    ;
+
+typeName
+    :   qualifiedName
+    ;
+
+classOrInterfaceType
+    :   typeName
+    |   '?' (('extends' | 'super') classOrInterfaceType)?
+    ;
+
+IDENTIFIER
+    :   [a-zA-Z_] [a-zA-Z_0-9]*
+    ;
+
+INT_LITERAL
+    :   '0' | [1-9][0-9]*
+    ;
+
+LONG_LITERAL
+    :   INT_LITERAL 'l' | INT_LITERAL 'L'
+    ;
+
+FLOAT_LITERAL
+    :   INT_LITERAL 'f' | INT_LITERAL 'F' | [0-9]+ '.' [0-9]* 'f' | [0-9]+ '.' [0-9]* 'F'
+    ;
+
+DOUBLE_LITERAL
+    :   INT_LITERAL 'd' | INT_LITERAL 'D' | [0-9]+ '.' [0-9]* 'd' | [0-9]+ '.' [0-9]* 'D'
+    ;
+
+CHAR_LITERAL
+    :   '\'' (ESC | ~[\\']) '\''
+    ;
+
+STRING_LITERAL
+    :   '"' (ESC | ~[\\"])* '"'
+    ;
+
+ESC
+    :   '\\' [btnfr"'\\]
+    |   '\\' [0-3] [0-7] [0-7]
+    |   '\\' 'u' HEX_DIGIT HEX_DIGIT HEX_DIGIT HEX_DIGIT
+    ;
+
+HEX_DIGIT
+    :   [0-9a-fA-F]
+    ;
+
+COMMENT :  '//' ~[\r\n]* -> skip
+    ;
+
+WS
+    :   [ \t\r\n]+ -> skip
+    ;

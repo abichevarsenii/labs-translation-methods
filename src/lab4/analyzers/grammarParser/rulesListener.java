@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab4/analyzers/grammarParser\rules.g4 by ANTLR 4.10.1
+// Generated from java-escape by ANTLR 4.11.1
 package lab4.analyzers.grammarParser;
 import lab4.analyzers.grammar.Grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
@@ -18,6 +18,16 @@ public interface rulesListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStart(rulesParser.StartContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link rulesParser#grammarName}.
+	 * @param ctx the parse tree
+	 */
+	void enterGrammarName(rulesParser.GrammarNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link rulesParser#grammarName}.
+	 * @param ctx the parse tree
+	 */
+	void exitGrammarName(rulesParser.GrammarNameContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link rulesParser#members}.
 	 * @param ctx the parse tree
@@ -68,6 +78,26 @@ public interface rulesListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitRight(rulesParser.RightContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link rulesParser#ruleName}.
+	 * @param ctx the parse tree
+	 */
+	void enterRuleName(rulesParser.RuleNameContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link rulesParser#ruleName}.
+	 * @param ctx the parse tree
+	 */
+	void exitRuleName(rulesParser.RuleNameContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link rulesParser#semantics}.
+	 * @param ctx the parse tree
+	 */
+	void enterSemantics(rulesParser.SemanticsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link rulesParser#semantics}.
+	 * @param ctx the parse tree
+	 */
+	void exitSemantics(rulesParser.SemanticsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link rulesParser#terminals}.
 	 * @param ctx the parse tree

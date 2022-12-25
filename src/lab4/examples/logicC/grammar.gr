@@ -1,0 +1,43 @@
+grammar logicC;
+
+@node (
+return Boolean;
+default false;
+)
+
+a[params: Map<String, Boolean>][count : Boolean]       :
+    b[params,count] aPoint[params,count] {res.value = aPoint.value};
+
+aPoint[params: Map<String, Boolean>][ count : Boolean]  :
+    OR b[params,count] aPoint[params,count] {res.value = count || b.value}
+    | EPS {res.value = count};
+
+b[params: Map<String, Boolean>][ count : Boolean]       :
+    c[params,count] bPoint[params,count] {res.value = bPoint.value};
+
+bPoint[params: Map<String, Boolean>][ count : Boolean]  :
+    XOR c[params,count] bPoint[params,count] {res.value = count xor c.value}
+    | EPS {res.value = count};
+
+c[params: Map<String, Boolean>][ count : Boolean]       :
+    d[params,count] cPoint[params,count] {res.value = cPoint.value};
+
+cPoint[params: Map<String, Boolean>][ count : Boolean]  :
+    AND d[params,count] cPoint[params,count] {res.value = count && d.value}
+    | EPS {res.value = count};
+
+d[params: Map<String, Boolean>][ count : Boolean]       :
+    NOT e[params,count] {res.value = !e.value}
+    | e[params,count] {res.value = e.value};
+
+e[params: Map<String, Boolean>][ count : Boolean]       :
+    LB a[params,count] {res.value = a.value} RB
+    | VAR {res.value = params.get(VAR.text)!!;};
+
+AND : '\\&';
+OR : '\\|';
+XOR : '\\^';
+NOT : '\\!';
+LB      : '\\(' ;
+RB      : '\\)' ;
+VAR    : '[a-zA-Z]+';

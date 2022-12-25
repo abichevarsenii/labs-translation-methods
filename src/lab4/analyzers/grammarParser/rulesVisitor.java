@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab4/analyzers/grammarParser\rules.g4 by ANTLR 4.10.1
+// Generated from java-escape by ANTLR 4.11.1
 package lab4.analyzers.grammarParser;
 import lab4.analyzers.grammar.Grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
@@ -17,6 +17,12 @@ public interface rulesVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStart(rulesParser.StartContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link rulesParser#grammarName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitGrammarName(rulesParser.GrammarNameContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link rulesParser#members}.
 	 * @param ctx the parse tree
@@ -47,6 +53,18 @@ public interface rulesVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitRight(rulesParser.RightContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link rulesParser#ruleName}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitRuleName(rulesParser.RuleNameContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link rulesParser#semantics}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSemantics(rulesParser.SemanticsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link rulesParser#terminals}.
 	 * @param ctx the parse tree

@@ -5,6 +5,12 @@ import lab4.analyzers.grammar.Grammar
 class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
 
 
+    override fun visitGrammarName(ctx: rulesParser.GrammarNameContext?): Grammar {
+        if (ctx != null) {
+            ctx.x.name = ctx.GRAMMAR_NAME().text.split(" ")[1].dropLast(1)
+        }
+        return Grammar()
+    }
 
     override fun visitStart(ctx: rulesParser.StartContext?): Grammar {
         val grammar = ctx!!.x
@@ -21,7 +27,8 @@ class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
 
     override fun visitNodeContext(ctx: rulesParser.NodeContextContext?): Grammar {
         if (ctx != null) {
-            ctx.x.nodeContext = ctx.text
+            ctx.x.returnType = ctx.RETURN_TYPE().text.split(" ")[1].dropLast(1)
+            ctx.x.returnValue = ctx.RETURN_VALUE().text.split(" ")[1].dropLast(1)
         }
         return Grammar()
     }
@@ -29,7 +36,8 @@ class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
     override fun visitNonTerminal(ctx: rulesParser.NonTerminalContext?): Grammar {
         if (ctx != null) {
             val state = Grammar.State()
-            state.name = ctx.RULE_NAME().text
+            state.name = ctx.ruleName().RULE_NAME().text
+            state.args = ctx.ruleName().ARG().map { it.text }
             ctx.x.addState(state)
             ctx.children.forEach { visit(it) }
         }
@@ -39,15 +47,21 @@ class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
     override fun visitRight(ctx: rulesParser.RightContext?): Grammar {
         if (ctx != null) {
             val rule = Grammar.Rule()
-            ctx.children.forEachIndexed() { index, child ->
+            ctx.children.forEach { child ->
                 val item = Grammar.Item()
                 val text = child.text
-                if (text.contains("$")) {
-                    item.code = text
+                if (child is rulesParser.RuleNameContext) {
+                    item.name = child.RULE_NAME().text
+                    if (child.ARG().size > 0) {
+                        item.arg = child.ARG(0).text
+                    }
+                    rule.addItem(item)
+                } else if (child is rulesParser.SemanticsContext) {
+                    rule.items.last().code = child.SEMANTIC_RULE().text
                 } else {
                     item.name = text
+                    rule.addItem(item)
                 }
-                rule.addItem(item)
             }
             ctx.x.states.last().addRule(rule)
         }

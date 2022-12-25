@@ -19,15 +19,21 @@ class LexerGenerator(private val grammar: Grammar) {
         .build()
 
     private val getTokensFunction = FunSpec.builder("getTokens")
-        .addModifiers(KModifier.PRIVATE)
         .returns(ClassName("kotlin.collections", "List").parameterizedBy(ClassName("",  grammar.name + "Token")))
         .addStatement("val tokens = mutableListOf<%T>()", ClassName("",  grammar.name + "Token"))
-        .addStatement("var token: %LToken? = getNextToken()", grammar.name!!)
-        .addStatement("while (token != null) {")
+        .addStatement("var token: %LToken = nextToken()", grammar.name!!)
+        .addStatement("while (token.type != %LTokenType.EOF) {", grammar.name!!)
         .addStatement("tokens += token")
-        .addStatement("token = getNextToken()")
+        .addStatement("token = nextToken()")
         .addStatement("}")
         .addStatement("return tokens + %LToken(%LTokenType.EOF, null)", grammar.name!!, grammar.name!!)
+        .build()
+
+
+    private val getTokenFunction = FunSpec.builder("getToken")
+        .returns(ClassName("",  grammar.name + "Token"))
+        .addStatement("if (currentToken == null) nextToken()")
+        .addStatement("return currentToken as %LToken", grammar.name!!)
         .build()
 
 
@@ -63,13 +69,23 @@ class LexerGenerator(private val grammar: Grammar) {
                     .mutable()
                     .build()
             )
+            .addProperty(
+                PropertySpec.builder("currentToken", ClassName("", grammar.name + "Token").copy(nullable = true))
+                    .initializer("null")
+                    .mutable()
+                    .build()
+            )
             .addFunction(findFunction)
             .addFunction(getTokensFunction)
+            .addFunction(getTokenFunction)
             .addFunction(
-                FunSpec.builder("getNextToken").returns(ClassName("", grammar.name + "Token").copy(nullable = true))
+                FunSpec.builder("nextToken").returns(ClassName("", grammar.name + "Token"))
                     .addStatement("while (position < length && text[position].isWhitespace()) { position++ }")
-                    .addStatement("if (position == length) { return null }")
-                    .addStatement("return when {")
+                    .addStatement("if (position == length) {")
+                    .addStatement("currentToken = %LToken(%LTokenType.EOF,null);",grammar.name!!, grammar.name!!)
+                    .addStatement("return currentToken as %LToken",grammar.name!!)
+                    .addStatement("}")
+                    .addStatement("val res = when {")
                     .apply {
                         grammar.tokens.forEach { rule ->
                             addStatement(
@@ -81,8 +97,11 @@ class LexerGenerator(private val grammar: Grammar) {
                             )
                         }
                     }
+
                     .addStatement("else -> throw Exception(\"Unexpected token at position \$position\")")
                     .addStatement("}")
+                    .addStatement("currentToken = res")
+                    .addStatement("return res")
                     .build()
             )
             .build()
@@ -90,17 +109,24 @@ class LexerGenerator(private val grammar: Grammar) {
         val typeTokenClass = TypeSpec.classBuilder(ClassName("", grammar.name + "Token"))
             .primaryConstructor(
                 FunSpec.constructorBuilder()
-                    .addParameter("type", ClassName("", grammar.name + "TokenType").copy(nullable = true))
+                    .addParameter("type", ClassName("", grammar.name + "TokenType"))
                     .addParameter("text", ClassName("","String").copy(nullable = true))
                     .build()
             ).addProperty(
-                PropertySpec.builder("type", ClassName("", grammar.name + "TokenType").copy(nullable = true))
+                PropertySpec.builder("type", ClassName("", grammar.name + "TokenType"))
                     .initializer("type")
                     .build()
             )
             .addProperty(
                 PropertySpec.builder("text", ClassName("","String").copy(nullable = true))
                     .initializer("text")
+                    .build()
+            )
+            .addFunction(
+                FunSpec.builder("toString")
+                    .addModifiers(KModifier.OVERRIDE)
+                    .returns(String::class)
+                    .addStatement("return \"\$type: \$text\"")
                     .build()
             )
             .build()
@@ -119,9 +145,9 @@ class LexerGenerator(private val grammar: Grammar) {
         val file2 = FileSpec.builder("", grammar.name + "Token").addType(typeTokenClass).build()
         val file3 = FileSpec.builder("", grammar.name + "TokenType").addType(enumTokenTypeClass).build()
 
-        file.writeTo(Path("src/lab4/examples/calc"))
-        file2.writeTo(Path("src/lab4/examples/calc"))
-        file3.writeTo(Path("src/lab4/examples/calc"))
+        file.writeTo(Path(path))
+        file2.writeTo(Path(path))
+        file3.writeTo(Path(path))
 
     }
 }

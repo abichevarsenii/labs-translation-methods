@@ -1,4 +1,4 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab4/analyzers/grammarParser\rules.g4 by ANTLR 4.10.1
+// Generated from java-escape by ANTLR 4.11.1
 package lab4.analyzers.grammarParser;
 import lab4.analyzers.grammar.Grammar;
 
@@ -11,6 +11,7 @@ import org.antlr.v4.runtime.tree.TerminalNode;
  * which can be extended to create a listener which only needs to handle a subset
  * of the available methods.
  */
+@SuppressWarnings("CheckReturnValue")
 public class rulesBaseListener implements rulesListener {
 	/**
 	 * {@inheritDoc}
@@ -24,6 +25,18 @@ public class rulesBaseListener implements rulesListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStart(rulesParser.StartContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGrammarName(rulesParser.GrammarNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGrammarName(rulesParser.GrammarNameContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -84,6 +97,30 @@ public class rulesBaseListener implements rulesListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitRight(rulesParser.RightContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterRuleName(rulesParser.RuleNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitRuleName(rulesParser.RuleNameContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSemantics(rulesParser.SemanticsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSemantics(rulesParser.SemanticsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
