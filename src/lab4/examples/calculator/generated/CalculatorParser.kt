@@ -31,6 +31,8 @@ public class CalculatorParser(
     when (lexer.getToken().type) {
     CalculatorTokenType.PLUS -> {
     val PLUS = CalculatorNode("PLUS",lexer.getToken().text!!)
+    PLUS.isTerminal = true
+    res.children += PLUS
     lexer.nextToken()
     val t = t()
     res.children += t
@@ -40,6 +42,8 @@ public class CalculatorParser(
     }
     CalculatorTokenType.MINUS -> {
     val MINUS = CalculatorNode("MINUS",lexer.getToken().text!!)
+    MINUS.isTerminal = true
+    res.children += MINUS
     lexer.nextToken()
     val t = t()
     res.children += t
@@ -84,6 +88,8 @@ public class CalculatorParser(
     when (lexer.getToken().type) {
     CalculatorTokenType.MULT -> {
     val MULT = CalculatorNode("MULT",lexer.getToken().text!!)
+    MULT.isTerminal = true
+    res.children += MULT
     lexer.nextToken()
     val f = f()
     res.children += f
@@ -93,6 +99,8 @@ public class CalculatorParser(
     }
     CalculatorTokenType.DIV -> {
     val DIV = CalculatorNode("DIV",lexer.getToken().text!!)
+    DIV.isTerminal = true
+    res.children += DIV
     lexer.nextToken()
     val f = f()
     res.children += f
@@ -118,37 +126,27 @@ public class CalculatorParser(
     when (lexer.getToken().type) {
     CalculatorTokenType.LB -> {
     val LB = CalculatorNode("LB",lexer.getToken().text!!)
+    LB.isTerminal = true
+    res.children += LB
     lexer.nextToken()
     val e = e()
     res.children += e
     res.value = e.value
     val RB = CalculatorNode("RB",lexer.getToken().text!!)
+    RB.isTerminal = true
+    res.children += RB
     lexer.nextToken()
     }
     CalculatorTokenType.INT -> {
     val INT = CalculatorNode("INT",lexer.getToken().text!!)
+    INT.isTerminal = true
+    res.children += INT
     lexer.nextToken()
     res.value = INT.text!!.toInt()
     }
     else -> throw ParseException("Unexpected token", lexer.position)
     }
     return res
-  }
-
-  private fun EQUAL(): CalculatorNode {
-    if (lexer.getToken().type == CalculatorTokenType.EQUAL) {
-    return CalculatorNode("EQUAL")
-    } else {
-    throw ParseException("EQUAL expected", lexer.position)
-    }
-  }
-
-  private fun LINE_END(): CalculatorNode {
-    if (lexer.getToken().type == CalculatorTokenType.LINE_END) {
-    return CalculatorNode("LINE_END")
-    } else {
-    throw ParseException("LINE_END expected", lexer.position)
-    }
   }
 
   private fun PLUS(): CalculatorNode {
@@ -172,14 +170,6 @@ public class CalculatorParser(
     return CalculatorNode("MULT")
     } else {
     throw ParseException("MULT expected", lexer.position)
-    }
-  }
-
-  private fun POW(): CalculatorNode {
-    if (lexer.getToken().type == CalculatorTokenType.POW) {
-    return CalculatorNode("POW")
-    } else {
-    throw ParseException("POW expected", lexer.position)
     }
   }
 
@@ -212,14 +202,6 @@ public class CalculatorParser(
     return CalculatorNode("INT")
     } else {
     throw ParseException("INT expected", lexer.position)
-    }
-  }
-
-  private fun ALPS(): CalculatorNode {
-    if (lexer.getToken().type == CalculatorTokenType.ALPS) {
-    return CalculatorNode("ALPS")
-    } else {
-    throw ParseException("ALPS expected", lexer.position)
     }
   }
 }

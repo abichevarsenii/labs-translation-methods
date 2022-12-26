@@ -1,4 +1,4 @@
-public enum class logicCTokenType {
+public enum class LogicCTokenType {
   AND,
   OR,
   XOR,

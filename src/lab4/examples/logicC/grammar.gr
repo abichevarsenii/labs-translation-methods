@@ -1,38 +1,38 @@
-grammar logicC;
+grammar LogicC;
 
 @node (
 return Boolean;
 default false;
 )
 
-a[params: Map<String, Boolean>][count : Boolean]       :
-    b[params,count] aPoint[params,count] {res.value = aPoint.value};
+a       :
+    b aPoint;
 
-aPoint[params: Map<String, Boolean>][ count : Boolean]  :
-    OR b[params,count] aPoint[params,count] {res.value = count || b.value}
-    | EPS {res.value = count};
+aPoint  :
+    OR b aPoint
+    | EPS;
 
-b[params: Map<String, Boolean>][ count : Boolean]       :
-    c[params,count] bPoint[params,count] {res.value = bPoint.value};
+b       :
+    c bPoint;
 
-bPoint[params: Map<String, Boolean>][ count : Boolean]  :
-    XOR c[params,count] bPoint[params,count] {res.value = count xor c.value}
-    | EPS {res.value = count};
+bPoint  :
+    XOR c bPoint
+    | EPS ;
 
-c[params: Map<String, Boolean>][ count : Boolean]       :
-    d[params,count] cPoint[params,count] {res.value = cPoint.value};
+c       :
+    d cPoint ;
 
-cPoint[params: Map<String, Boolean>][ count : Boolean]  :
-    AND d[params,count] cPoint[params,count] {res.value = count && d.value}
-    | EPS {res.value = count};
+cPoint  :
+    AND d cPoint
+    | EPS;
 
-d[params: Map<String, Boolean>][ count : Boolean]       :
-    NOT e[params,count] {res.value = !e.value}
-    | e[params,count] {res.value = e.value};
+d       :
+    NOT e
+    | e;
 
-e[params: Map<String, Boolean>][ count : Boolean]       :
-    LB a[params,count] {res.value = a.value} RB
-    | VAR {res.value = params.get(VAR.text)!!;};
+e       :
+    LB a RB
+    | VAR;
 
 AND : '\\&';
 OR : '\\|';

@@ -38,6 +38,12 @@ class ParserGenerator(private val grammar: Grammar) {
                     .mutable()
                     .build()
             )
+            .addProperty(
+                PropertySpec.builder("isTerminal", Boolean::class)
+                    .initializer("false")
+                    .mutable()
+                    .build()
+            )
             .addFunction(
                 FunSpec.builder("toString")
                     .addModifiers(KModifier.OVERRIDE)
@@ -73,7 +79,9 @@ class ParserGenerator(private val grammar: Grammar) {
 
         val maybeToken: Grammar.StateToken? = grammar.tokens.find { it.name == item.name }
         if (maybeToken != null) {
-            code.addStatement("val %L = %L(\"%L\",lexer.getToken().text!!)", item.name, grammar.name + "Node", item.name,)
+            code.addStatement("val %L = %L(\"%L\",lexer.getToken().text!!)", item.name, grammar.name + "Node", item.name)
+            code.addStatement("%L.isTerminal = true", item.name)
+            code.addStatement("res.children += %L", item.name)
             code.addStatement("lexer.nextToken()")
         } else {
             if (item.arg != null) {

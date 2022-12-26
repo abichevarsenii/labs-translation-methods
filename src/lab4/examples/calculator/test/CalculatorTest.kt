@@ -1,8 +1,8 @@
 package lab4.examples.calculator.test
 
 
-//import CalculatorLexer
-//import CalculatorParser
+import CalculatorLexer
+import CalculatorParser
 import org.junit.jupiter.api.DynamicTest
 import org.junit.jupiter.api.TestFactory
 import org.junit.jupiter.api.assertThrows
@@ -13,27 +13,26 @@ import javax.script.ScriptEngineManager
 class CalculatorTest {
     companion object {
         val correctExpression = mapOf(
-            "0" to "SimpleVariable",
-            " 0   " to "SimpleOperation",
-            "1+1" to "TripleOperation",
-            "1-2-3" to "SimpleOperationInBrackets",
-            "1-2*3+4" to "SimpleNot",
-            "2*3*4" to "SimpleNotWithSimpleOperation",
-            "(0)" to "ManyBrackets",
+            "5" to "SimpleNumber",
+            "1+1" to "SimpleOperation",
+            "3+5*6" to "TripleOperation",
+            "10-(2-3)" to "SimpleOperationInBrackets",
+            "6*((2-3)*4)" to "OperationInBrackets",
+            "2*2*2*2*2*2*2*2" to "ManyOperations",
             "(((((((((0)))))))))" to "FullExpressionWithAllOperations",
-            "2/(2-1)" to "ManyVariables",
-            "2/(2-1)/(2)" to "LongExpression",
+            "((20 + (((15 + 52) + (52)))) + 7) * ((2 + (((15 + 2) + (52)))) + 7)" to "LongExpression",
         )
         val incorrectExpression = mapOf(
-            "" to "SimpleBracket",
+            "" to "Empty expression",
             "+" to "IncorrectOperation",
             "1+" to "IncorrectArityOperation",
-            "1/" to "IncorrectBalanceOfBrackets",
-            "1//" to "Number",
-            "1/*" to "IncorrectSymbol",
-            "1/0" to "IncorrectNameOfVariable",
-            "(()" to "IncorrectNameOfVariable",
-            "2+3((4)+1))" to "IncorrectNameOfVariable",
+            "1/" to "IncorrectArityOperation",
+            "#" to "IncorrectSymbol",
+            "1//" to "IncorrectOperation",
+            "1/*" to "IncorrectOperation",
+            "1/0" to "DivideByZero",
+            "(()" to "IncorrectBalanceOfBrackets",
+            "2+3((4)+1))" to "SkipOperation",
         )
     }
 
@@ -44,7 +43,9 @@ class CalculatorTest {
         return correctExpression.map { pair ->
             DynamicTest.dynamicTest("${pair.value}Test") {
                 println("Check expression ${pair.key}")
-                assert(checkedValue(pair.key) == expectedValue(pair.key))
+                val check = checkedValue(pair.key)
+                val expected = expectedValue(pair.key)
+                assert(check == expected)
             }
         }.toList()
     }
@@ -65,7 +66,7 @@ class CalculatorTest {
     }
 
     private fun expectedValue(expression: String): Int {
-        return 0 //CalculatorParser(CalculatorLexer(expression)).e().value
+        return CalculatorParser(CalculatorLexer(expression)).e().value
     }
 
     private fun evaluate(string: String): Int {

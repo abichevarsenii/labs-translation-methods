@@ -4,6 +4,7 @@ import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import lab4.analyzers.grammar.Grammar
 import java.io.InputStream
+import java.text.ParseException
 import kotlin.io.path.Path
 
 class LexerGenerator(private val grammar: Grammar) {
@@ -98,7 +99,7 @@ class LexerGenerator(private val grammar: Grammar) {
                         }
                     }
 
-                    .addStatement("else -> throw Exception(\"Unexpected token at position \$position\")")
+                    .addStatement("else -> throw %T(\"Unexpected token at position \$position\",position)", ParseException::class)
                     .addStatement("}")
                     .addStatement("currentToken = res")
                     .addStatement("return res")

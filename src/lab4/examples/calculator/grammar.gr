@@ -21,18 +21,14 @@ f :
     LB e {res.value = e.value} RB
     | INT {res.value = INT.text!!.toInt()};
 
-EQUAL   : '=' ;
-LINE_END: ';' ;
 
 PLUS    : '\\+' ;
 MINUS   : '-' ;
 
 MULT    : '\\*' ;
-POW     : '\\*\\*';
 DIV     : '/' ;
 
 LB      : '\\(' ;
 RB      : '\\)' ;
 
 INT     : '[0-9]+' ;
-ALPS    : '[a-zA-Z]+';

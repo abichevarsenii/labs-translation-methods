@@ -1,4 +1,4 @@
-import java.lang.IllegalStateException
+import java.text.ParseException
 import kotlin.Boolean
 import kotlin.Int
 import kotlin.collections.List
@@ -13,10 +13,6 @@ public class CalculatorLexer(
   public var currentData: String? = null
 
   public var currentToken: CalculatorToken? = null
-
-  init {
-    nextToken()
-  }
 
   private fun find(`value`: kotlin.String): Boolean {
     val regex = value.toRegex()
@@ -36,7 +32,7 @@ public class CalculatorLexer(
   }
 
   public fun getToken(): CalculatorToken {
-    if (currentToken == null) throw IllegalStateException("Lexer is not initialized")
+    if (currentToken == null) nextToken()
     return currentToken as CalculatorToken
   }
 
@@ -47,17 +43,11 @@ public class CalculatorLexer(
     return currentToken as CalculatorToken
     }
     val res = when {
-    find("=") -> CalculatorToken(CalculatorTokenType.EQUAL, currentData).also { position +=
-        currentData!!.length }
-    find(";") -> CalculatorToken(CalculatorTokenType.LINE_END, currentData).also { position +=
-        currentData!!.length }
     find("\\+") -> CalculatorToken(CalculatorTokenType.PLUS, currentData).also { position +=
         currentData!!.length }
     find("-") -> CalculatorToken(CalculatorTokenType.MINUS, currentData).also { position +=
         currentData!!.length }
     find("\\*") -> CalculatorToken(CalculatorTokenType.MULT, currentData).also { position +=
-        currentData!!.length }
-    find("\\*\\*") -> CalculatorToken(CalculatorTokenType.POW, currentData).also { position +=
         currentData!!.length }
     find("/") -> CalculatorToken(CalculatorTokenType.DIV, currentData).also { position +=
         currentData!!.length }
@@ -67,9 +57,7 @@ public class CalculatorLexer(
         currentData!!.length }
     find("[0-9]+") -> CalculatorToken(CalculatorTokenType.INT, currentData).also { position +=
         currentData!!.length }
-    find("[a-zA-Z]+") -> CalculatorToken(CalculatorTokenType.ALPS, currentData).also { position +=
-        currentData!!.length }
-    else -> throw Exception("Unexpected token at position $position")
+    else -> throw ParseException("Unexpected token at position $position",position)
     }
     currentToken = res
     return res
