@@ -3,31 +3,41 @@ import java.text.ParseException
 public class CalculatorParser(
   public val lexer: CalculatorLexer,
 ) {
+  init {
+  }
+
   public fun e(): CalculatorNode {
     val res = CalculatorNode("e")
     when (lexer.getToken().type) {
+    CalculatorTokenType.MINUS -> {
+    val t = t()
+    res.children += t
+    val e1 = e1(t.value)
+    res.children += e1
+    res.value = e1.value
+    }
     CalculatorTokenType.LB -> {
     val t = t()
     res.children += t
-    val ePoint = ePoint(t.value)
-    res.children += ePoint
-    res.value = ePoint.value
+    val e1 = e1(t.value)
+    res.children += e1
+    res.value = e1.value
     }
     CalculatorTokenType.INT -> {
     val t = t()
     res.children += t
-    val ePoint = ePoint(t.value)
-    res.children += ePoint
-    res.value = ePoint.value
+    val e1 = e1(t.value)
+    res.children += e1
+    res.value = e1.value
     }
     else -> throw ParseException("Unexpected token", lexer.position)
     }
     return res
   }
 
-  public fun ePoint(count: Int): CalculatorNode {
-    val res = CalculatorNode("ePoint")
-    res.value = count
+  public fun e1(x: Int): CalculatorNode {
+    val res = CalculatorNode("e1")
+    res.value = x
     when (lexer.getToken().type) {
     CalculatorTokenType.PLUS -> {
     val PLUS = CalculatorNode("PLUS",lexer.getToken().text!!)
@@ -36,9 +46,9 @@ public class CalculatorParser(
     lexer.nextToken()
     val t = t()
     res.children += t
-    val ePoint = ePoint(count + t.value)
-    res.children += ePoint
-    res.value = ePoint.value
+    val e1 = e1(x + t.value)
+    res.children += e1
+    res.value = e1.value
     }
     CalculatorTokenType.MINUS -> {
     val MINUS = CalculatorNode("MINUS",lexer.getToken().text!!)
@@ -47,9 +57,9 @@ public class CalculatorParser(
     lexer.nextToken()
     val t = t()
     res.children += t
-    val ePoint = ePoint(count - t.value)
-    res.children += ePoint
-    res.value = ePoint.value
+    val e1 = e1(x - t.value)
+    res.children += e1
+    res.value = e1.value
     }
     CalculatorTokenType.EOF -> {
     }
@@ -63,50 +73,57 @@ public class CalculatorParser(
   public fun t(): CalculatorNode {
     val res = CalculatorNode("t")
     when (lexer.getToken().type) {
+    CalculatorTokenType.MINUS -> {
+    val c = c()
+    res.children += c
+    val t1 = t1(c.value)
+    res.children += t1
+    res.value = t1.value
+    }
     CalculatorTokenType.LB -> {
-    val f = f()
-    res.children += f
-    val tPoint = tPoint(f.value)
-    res.children += tPoint
-    res.value = tPoint.value
+    val c = c()
+    res.children += c
+    val t1 = t1(c.value)
+    res.children += t1
+    res.value = t1.value
     }
     CalculatorTokenType.INT -> {
-    val f = f()
-    res.children += f
-    val tPoint = tPoint(f.value)
-    res.children += tPoint
-    res.value = tPoint.value
+    val c = c()
+    res.children += c
+    val t1 = t1(c.value)
+    res.children += t1
+    res.value = t1.value
     }
     else -> throw ParseException("Unexpected token", lexer.position)
     }
     return res
   }
 
-  public fun tPoint(count: Int): CalculatorNode {
-    val res = CalculatorNode("tPoint")
-    res.value = count
+  public fun t1(x: Int): CalculatorNode {
+    val res = CalculatorNode("t1")
+    res.value = x
     when (lexer.getToken().type) {
     CalculatorTokenType.MULT -> {
     val MULT = CalculatorNode("MULT",lexer.getToken().text!!)
     MULT.isTerminal = true
     res.children += MULT
     lexer.nextToken()
-    val f = f()
-    res.children += f
-    val tPoint = tPoint(count * f.value)
-    res.children += tPoint
-    res.value = tPoint.value
+    val c = c()
+    res.children += c
+    val t1 = t1(x * c.value)
+    res.children += t1
+    res.value = t1.value
     }
     CalculatorTokenType.DIV -> {
     val DIV = CalculatorNode("DIV",lexer.getToken().text!!)
     DIV.isTerminal = true
     res.children += DIV
     lexer.nextToken()
-    val f = f()
-    res.children += f
-    val tPoint = tPoint(count / f.value)
-    res.children += tPoint
-    res.value = tPoint.value
+    val c = c()
+    res.children += c
+    val t1 = t1(x / c.value)
+    res.children += t1
+    res.value = t1.value
     }
     CalculatorTokenType.PLUS -> {
     }
@@ -115,6 +132,33 @@ public class CalculatorParser(
     CalculatorTokenType.EOF -> {
     }
     CalculatorTokenType.RB -> {
+    }
+    else -> throw ParseException("Unexpected token", lexer.position)
+    }
+    return res
+  }
+
+  public fun c(): CalculatorNode {
+    val res = CalculatorNode("c")
+    when (lexer.getToken().type) {
+    CalculatorTokenType.MINUS -> {
+    val MINUS = CalculatorNode("MINUS",lexer.getToken().text!!)
+    MINUS.isTerminal = true
+    res.children += MINUS
+    lexer.nextToken()
+    val f = f()
+    res.children += f
+    res.value = -f.value
+    }
+    CalculatorTokenType.LB -> {
+    val f = f()
+    res.children += f
+    res.value = f.value
+    }
+    CalculatorTokenType.INT -> {
+    val f = f()
+    res.children += f
+    res.value = f.value
     }
     else -> throw ParseException("Unexpected token", lexer.position)
     }
