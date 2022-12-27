@@ -5,8 +5,7 @@ import LogicCLexer
 import LogicCParser
 
 fun main() {
-    LogicCLexer("a & b").getTokens().forEach { println(it) }
-    val tree = LogicCParser(LogicCLexer("!a")).a()
+    val tree = LogicCParser(LogicCLexer("a | b & c")).a()
     println(tree)
 }
 

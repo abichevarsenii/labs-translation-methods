@@ -4,6 +4,16 @@ import lab4.analyzers.grammar.Grammar
 
 class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
 
+    override fun visitImports(ctx: rulesParser.ImportsContext?): Grammar {
+        ctx?.IMPORT()?.forEach {
+            if (ctx.x.header == null) {
+                ctx.x.header = it.text
+            } else {
+                ctx.x.header +=  it.text
+            }
+        }
+        return Grammar()
+    }
 
     override fun visitGrammarName(ctx: rulesParser.GrammarNameContext?): Grammar {
         if (ctx != null) {
@@ -20,7 +30,7 @@ class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
 
     override fun visitMembers(ctx: rulesParser.MembersContext?): Grammar {
         if (ctx != null) {
-            ctx.x.members = ctx.text
+            ctx.x.members = ctx.CODE().text.dropLast(1).drop(1)
         }
         return Grammar()
     }

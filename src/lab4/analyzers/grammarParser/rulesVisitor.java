@@ -36,6 +36,12 @@ public interface rulesVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitNodeContext(rulesParser.NodeContextContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link rulesParser#imports}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitImports(rulesParser.ImportsContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link rulesParser#nonTerminals}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

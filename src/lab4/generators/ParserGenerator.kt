@@ -3,12 +3,13 @@ package lab4.generators
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import lab4.analyzers.grammar.Grammar
+import java.io.File
 import java.text.ParseException
 import kotlin.io.path.Path
 
 class ParserGenerator(private val grammar: Grammar) {
 
-    fun generateNodeClass(returnType : ClassName?, returnValue: String?) : TypeSpec {
+    private fun generateNodeClass(returnType : ClassName?, returnValue: String?) : TypeSpec {
         val res = TypeSpec.classBuilder(ClassName("", grammar.name + "Node"))
             .primaryConstructor(
                 FunSpec.constructorBuilder()
@@ -62,7 +63,7 @@ class ParserGenerator(private val grammar: Grammar) {
         return res.build()
     }
 
-    fun generateTerminal(name: String): FunSpec {
+    private fun generateTerminal(name: String): FunSpec {
         return FunSpec.builder(name)
             .addModifiers(KModifier.PRIVATE)
             .addStatement("if (lexer.getToken().type == %LTokenType.%L) {", grammar.name!!, name)
@@ -105,8 +106,7 @@ class ParserGenerator(private val grammar: Grammar) {
         return code.build()
     }
 
-
-    fun generateState(name: String) : FunSpec {
+    private fun generateState(name: String) : FunSpec {
         val state = grammar.states.find { it.name == name }!!
         val funSpec = FunSpec.builder(name)
         funSpec.returns(ClassName("", grammar.name + "Node"))
@@ -130,14 +130,14 @@ class ParserGenerator(private val grammar: Grammar) {
         state.rules.forEach { rule ->
             funSpec.addCode(generateRule(rule, state))
         }
-        funSpec.addStatement("else -> throw ParseException(\"Unexpected token\", lexer.position)")
+        funSpec.addStatement("else -> throw %T(\"Unexpected token\", lexer.position)", ParseException::class)
         funSpec.addStatement("}")
         funSpec.addStatement("return res")
 
         return funSpec.build()
     }
 
-    fun generateRule(rule : Grammar.Rule,state : Grammar.State) : CodeBlock {
+    private fun generateRule(rule : Grammar.Rule, state : Grammar.State) : CodeBlock {
         val code = CodeBlock.builder()
 
         val nextTargetName = rule.items[0].name
@@ -168,23 +168,9 @@ class ParserGenerator(private val grammar: Grammar) {
         return code.build()
     }
 
-
-
-
     fun generate(path: String) {
         grammar.buildFirst()
         grammar.buildFollow()
-
-        for (key in grammar.FIRST.keys) {
-            print("$key: ")
-            println(grammar.FIRST[key].toString())
-        }
-        println("=====")
-        for (key in grammar.FOLLOW.keys) {
-            print("$key: ")
-            println(grammar.FOLLOW[key].toString())
-        }
-
 
         val nodeClass = generateNodeClass(if (grammar.returnType == null) null else ClassName("", grammar.returnType!!), grammar.returnValue)
 
@@ -198,14 +184,31 @@ class ParserGenerator(private val grammar: Grammar) {
                     .initializer("lexer")
                     .build()
             )
+            .addInitializerBlock(CodeBlock.of(""))
             .addFunctions(grammar.states.map { generateState(it.name!!) })
             .addFunctions(grammar.tokens.map { generateTerminal(it.name!!) })
             .build()
 
-        val file = FileSpec.builder("", grammar.name + "Parser").addType(parserClass).addImport("java.text", "ParseException").build()
+        val file = FileSpec.builder("", grammar.name + "Parser").addType(parserClass)
+        if (grammar.header != null) {
+             val imports = grammar.header!!.split(";").dropLast(1).map { it.split(" ")[1] }
+            imports.forEach{
+                val packageName = it.dropLastWhile { it != '.' }
+                val className = it.split(".")[it.split(".").size - 1]
+                file.addImport(packageName, className)
+            }
+        }
         val fileNode = FileSpec.builder("", grammar.name + "Node").addType(nodeClass).build()
-
-        file.writeTo(Path(path))
+        file.build().writeTo(Path(path))
         fileNode.writeTo(Path(path))
+
+        if (grammar.members != null){
+            postprocessing(path)
+        }
+    }
+
+    private fun postprocessing(path : String){
+       val text = File(path + "\\" + grammar.name + "Parser.kt").readText().replace("init {\n" + "  }",grammar.members!!)
+        File(path + "\\" + grammar.name + "Parser.kt").writeText(text)
     }
 }

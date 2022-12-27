@@ -3,7 +3,6 @@ package lab4.generators
 import com.squareup.kotlinpoet.*
 import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import lab4.analyzers.grammar.Grammar
-import java.io.InputStream
 import java.text.ParseException
 import kotlin.io.path.Path
 

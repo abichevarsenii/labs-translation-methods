@@ -14,7 +14,7 @@ import guru.nidi.graphviz.model.MutableNode
 import java.io.File
 
 fun main() {
-    val str = "5 + 7 * 9"
+    val str = "2 * 2 + 3"
     val res = CalculatorParser(CalculatorLexer(str)).e()
     Visualizer("src/lab4/examples/calculator/visualizer/graph.png").visualizeGraph(res)
 }
