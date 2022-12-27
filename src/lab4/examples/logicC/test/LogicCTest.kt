@@ -24,13 +24,13 @@ class LogicCTest {
         val correctExpression = mapOf(
             "a" to "SimpleVariable",
             "a & b" to "SimpleOperation",
-            "a ^ b ^ c" to "TripleOperation",
+            "a | b & c" to "TripleOperation",
             "(((a ^ b)))" to "SimpleOperationInBrackets",
             "!a" to "SimpleNot",
             "!(a | b)" to "SimpleNotWithSimpleOperation",
             "((((((a))))))^((((b))))" to "ManyBrackets",
             "(!a | b) & a & (a | !(b ^ c))" to "FullExpressionWithAllOperations",
-            "a & b & c & d & e & f & g & s & q" to "ManyVariables",
+            "a & b | c ^ d" to "ManyVariables",
             "(!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | b) & a & (a | !(b ^ c)) | !(b ^ c))" to "LongExpression",
             "(!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | (!a | (!a | b) & a & (a | !(b ^ c))) & a & ((!a | b) & a & (a | !(b ^ c)) | !(b ^ c))) & a & (a | !(b ^ c)) | !(b ^ c))" to "VeryLongExpression"
         )
@@ -63,7 +63,7 @@ class LogicCTest {
         return incorrectExpression.map { pair ->
             DynamicTest.dynamicTest("${pair.value}Test") {
                 println("Check expression ${pair.key}")
-                assertThrows<ParseException> { LogicCParser(LogicCLexer(pair.key)).a() }
+                assertThrows<ParseException> { LogicCParser(LogicCLexer(pair.key)).a(mapOf()) }
             }
         }.toList()
     }
@@ -122,7 +122,7 @@ class LogicCTest {
     }
 
     private fun expectedValue(expression: String, params: Map<String, Boolean>): Boolean {
-        return evaluate(params, treeWalk(LogicCParser(LogicCLexer(expression)).a(), params))
+        return LogicCParser(LogicCLexer(expression)).a(params).value
     }
 
     private fun evaluate(params: Map<String, Boolean>, string: String): Boolean {

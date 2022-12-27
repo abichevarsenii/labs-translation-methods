@@ -16,7 +16,7 @@ import java.io.File
 
 fun main() {
     val str = "a & b | c"
-    val res = LogicCParser(LogicCLexer(str)).a()
+    val res = LogicCParser(LogicCLexer(str)).a(mapOf("a" to false, "b" to false, "c" to true))
     Visualizer("src/lab4/examples/logicC/visualizer/graph.png").visualizeGraph(res)
 }
 
@@ -30,7 +30,11 @@ class Visualizer(private val path : String) {
 
     fun map(node: LogicCNode) : MutableNode {
         return if (node.isTerminal){
-            Factory.mutNode(getID()).add(Label.of(node.text!!)).add(Shape.BOX).add(Color.RED)
+            if (node.name == "VAR") {
+                Factory.mutNode(getID()).add(Label.of(node.text!! + " : " + node.value.toString())).add(Shape.BOX).add(Color.RED)
+            } else {
+                Factory.mutNode(getID()).add(Label.of(node.text!!)).add(Shape.BOX).add(Color.RED)
+            }
         } else {
             val parent = Factory.mutNode(getID()).add(Label.of(node.name!!))
             if (node.children.isEmpty()){

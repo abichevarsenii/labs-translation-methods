@@ -3,25 +3,28 @@ import java.text.ParseException
 public class LogicCParser(
   public val lexer: LogicCLexer,
 ) {
-  public fun a(): LogicCNode {
+  init {
+  }
+
+  public fun a(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("a")
     when (lexer.getToken().type) {
     LogicCTokenType.NOT -> {
-    val b = b()
+    val b = b(params)
     res.children += b
-    val aPoint = aPoint()
+    val aPoint = aPoint(params)
     res.children += aPoint
     }
     LogicCTokenType.LB -> {
-    val b = b()
+    val b = b(params)
     res.children += b
-    val aPoint = aPoint()
+    val aPoint = aPoint(params)
     res.children += aPoint
     }
     LogicCTokenType.VAR -> {
-    val b = b()
+    val b = b(params)
     res.children += b
-    val aPoint = aPoint()
+    val aPoint = aPoint(params)
     res.children += aPoint
     }
     else -> throw ParseException("Unexpected token", lexer.position)
@@ -29,7 +32,7 @@ public class LogicCParser(
     return res
   }
 
-  public fun aPoint(): LogicCNode {
+  public fun aPoint(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("aPoint")
     when (lexer.getToken().type) {
     LogicCTokenType.OR -> {
@@ -37,9 +40,9 @@ public class LogicCParser(
     OR.isTerminal = true
     res.children += OR
     lexer.nextToken()
-    val b = b()
+    val b = b(params)
     res.children += b
-    val aPoint = aPoint()
+    val aPoint = aPoint(params)
     res.children += aPoint
     }
     LogicCTokenType.EOF -> {
@@ -51,25 +54,25 @@ public class LogicCParser(
     return res
   }
 
-  public fun b(): LogicCNode {
+  public fun b(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("b")
     when (lexer.getToken().type) {
     LogicCTokenType.NOT -> {
-    val c = c()
+    val c = c(params)
     res.children += c
-    val bPoint = bPoint()
+    val bPoint = bPoint(params)
     res.children += bPoint
     }
     LogicCTokenType.LB -> {
-    val c = c()
+    val c = c(params)
     res.children += c
-    val bPoint = bPoint()
+    val bPoint = bPoint(params)
     res.children += bPoint
     }
     LogicCTokenType.VAR -> {
-    val c = c()
+    val c = c(params)
     res.children += c
-    val bPoint = bPoint()
+    val bPoint = bPoint(params)
     res.children += bPoint
     }
     else -> throw ParseException("Unexpected token", lexer.position)
@@ -77,7 +80,7 @@ public class LogicCParser(
     return res
   }
 
-  public fun bPoint(): LogicCNode {
+  public fun bPoint(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("bPoint")
     when (lexer.getToken().type) {
     LogicCTokenType.XOR -> {
@@ -85,9 +88,9 @@ public class LogicCParser(
     XOR.isTerminal = true
     res.children += XOR
     lexer.nextToken()
-    val c = c()
+    val c = c(params)
     res.children += c
-    val bPoint = bPoint()
+    val bPoint = bPoint(params)
     res.children += bPoint
     }
     LogicCTokenType.OR -> {
@@ -101,25 +104,25 @@ public class LogicCParser(
     return res
   }
 
-  public fun c(): LogicCNode {
+  public fun c(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("c")
     when (lexer.getToken().type) {
     LogicCTokenType.NOT -> {
-    val d = d()
+    val d = d(params)
     res.children += d
-    val cPoint = cPoint()
+    val cPoint = cPoint(params)
     res.children += cPoint
     }
     LogicCTokenType.LB -> {
-    val d = d()
+    val d = d(params)
     res.children += d
-    val cPoint = cPoint()
+    val cPoint = cPoint(params)
     res.children += cPoint
     }
     LogicCTokenType.VAR -> {
-    val d = d()
+    val d = d(params)
     res.children += d
-    val cPoint = cPoint()
+    val cPoint = cPoint(params)
     res.children += cPoint
     }
     else -> throw ParseException("Unexpected token", lexer.position)
@@ -127,7 +130,7 @@ public class LogicCParser(
     return res
   }
 
-  public fun cPoint(): LogicCNode {
+  public fun cPoint(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("cPoint")
     when (lexer.getToken().type) {
     LogicCTokenType.AND -> {
@@ -135,9 +138,9 @@ public class LogicCParser(
     AND.isTerminal = true
     res.children += AND
     lexer.nextToken()
-    val d = d()
+    val d = d(params)
     res.children += d
-    val cPoint = cPoint()
+    val cPoint = cPoint(params)
     res.children += cPoint
     }
     LogicCTokenType.XOR -> {
@@ -153,7 +156,7 @@ public class LogicCParser(
     return res
   }
 
-  public fun d(): LogicCNode {
+  public fun d(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("d")
     when (lexer.getToken().type) {
     LogicCTokenType.NOT -> {
@@ -161,15 +164,15 @@ public class LogicCParser(
     NOT.isTerminal = true
     res.children += NOT
     lexer.nextToken()
-    val e = e()
+    val e = e(params)
     res.children += e
     }
     LogicCTokenType.LB -> {
-    val e = e()
+    val e = e(params)
     res.children += e
     }
     LogicCTokenType.VAR -> {
-    val e = e()
+    val e = e(params)
     res.children += e
     }
     else -> throw ParseException("Unexpected token", lexer.position)
@@ -177,7 +180,7 @@ public class LogicCParser(
     return res
   }
 
-  public fun e(): LogicCNode {
+  public fun e(params: Map<String, Boolean>): LogicCNode {
     val res = LogicCNode("e")
     when (lexer.getToken().type) {
     LogicCTokenType.LB -> {
@@ -185,7 +188,7 @@ public class LogicCParser(
     LB.isTerminal = true
     res.children += LB
     lexer.nextToken()
-    val a = a()
+    val a = a(params)
     res.children += a
     val RB = LogicCNode("RB",lexer.getToken().text!!)
     RB.isTerminal = true
@@ -197,6 +200,7 @@ public class LogicCParser(
     VAR.isTerminal = true
     res.children += VAR
     lexer.nextToken()
+    res.value = params.get(VAR.text)!!; VAR.value = res.value;
     }
     else -> throw ParseException("Unexpected token", lexer.position)
     }

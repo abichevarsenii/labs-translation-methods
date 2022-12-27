@@ -5,34 +5,34 @@ return Boolean;
 default false;
 )
 
-a       :
-    b aPoint;
+a[params: Map<String, Boolean>]       :
+    b[params] aPoint[params];
 
-aPoint  :
-    OR b aPoint
+aPoint[params: Map<String, Boolean>] :
+    OR b[params] aPoint[params]
     | EPS;
 
-b       :
-    c bPoint;
+b[params: Map<String, Boolean>]      :
+    c[params] bPoint[params];
 
-bPoint  :
-    XOR c bPoint
-    | EPS ;
-
-c       :
-    d cPoint ;
-
-cPoint  :
-    AND d cPoint
+bPoint[params: Map<String, Boolean>]  :
+    XOR c[params] bPoint[params]
     | EPS;
 
-d       :
-    NOT e
-    | e;
+c[params: Map<String, Boolean>]    :
+    d[params] cPoint[params];
 
-e       :
-    LB a RB
-    | VAR;
+cPoint[params: Map<String, Boolean>]  :
+    AND d[params] cPoint[params]
+    | EPS;
+
+d[params: Map<String, Boolean>]       :
+    NOT e[params]
+    | e[params];
+
+e[params: Map<String, Boolean>]       :
+    LB a[params] RB
+    | VAR {res.value = params.get(VAR.text)!!; VAR.value = res.value;};
 
 AND : '\\&';
 OR : '\\|';

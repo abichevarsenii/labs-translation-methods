@@ -17,12 +17,8 @@ class Grammar(
     class State(
         var name: String? = null,
         var args : List<String> = emptyList(),
-        var context : String? = null,
         var rules: MutableList<Rule> = mutableListOf()
     ) {
-        private val first: Set<String> = HashSet()
-        private val follow: Set<String> = HashSet()
-        private val hasEpsilon = false
         fun addRule(rule: Rule) = rules.plusAssign(rule)
         override fun toString(): String {
             val sb: StringBuilder = StringBuilder()
