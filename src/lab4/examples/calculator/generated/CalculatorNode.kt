@@ -11,5 +11,5 @@ public class CalculatorNode(
 
   public var `value`: Int = 0
 
-  public override fun toString(): kotlin.String = "$name: $value"
+  public override fun toString(): kotlin.String = "$name"
 }

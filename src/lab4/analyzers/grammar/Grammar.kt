@@ -4,8 +4,9 @@ class Grammar(
     var name: String? = null,
     var header: String? = null,
     var members: String? = null,
-    var returnType : String? = null,
-    var returnValue : String? = null,
+    var namesNodeVar : MutableList<String> = mutableListOf(),
+    var returnType : MutableList<String> = mutableListOf(),
+    var returnValue : MutableList<String> = mutableListOf(),
     var states: MutableList<State> = mutableListOf(),
     var tokens: MutableList<StateToken> = mutableListOf()
 ) {

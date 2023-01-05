@@ -1,38 +1,61 @@
 grammar LogicC;
 
+@member $
+fun op(a: Boolean?, b: Boolean?, op: String): Boolean? {
+    return if (a != null && b != null) when (op) {
+        "^" -> a xor b
+        "&" -> a && b
+        "|" -> a || b
+        "!" -> !a
+        else -> null
+    } else return null
+}
+fun check(s : String, b : Boolean?) : String{
+    if (b == null) return s;
+    else return b.toString();
+}
+$
+
 @node (
-return Boolean;
-default false;
+name value;
+return Boolean?;
+default null;
 )
 
-a[params: Map<String, Boolean>]       :
-    b[params] aPoint[params];
+@node (
+name str;
+return String;
+default "";
+)
 
-aPoint[params: Map<String, Boolean>] :
-    OR b[params] aPoint[params]
-    | EPS;
+a[params: Map<String, Boolean>][count : Boolean?][str : String]       :
+    b[params,count,str] aPoint[params,b.value,str] {res.value = aPoint.value; res.str = check(b.str + aPoint.str, aPoint.value);};
 
-b[params: Map<String, Boolean>]      :
-    c[params] bPoint[params];
+aPoint[params: Map<String, Boolean>][count : Boolean?][str : String]   :
+    OR b[params,count,str] aPoint[params,op(count, b.value,"|"),str] {res.value = aPoint.value; res.str = check(OR.text!! + b.str + aPoint.str,aPoint.value);}
+    | EPS {res.value = count; res.str = str;};
 
-bPoint[params: Map<String, Boolean>]  :
-    XOR c[params] bPoint[params]
-    | EPS;
+b[params: Map<String, Boolean>][count : Boolean?][str : String]        :
+    c[params,count,str] bPoint[params,c.value,c.str] {res.value = bPoint.value; res.str = check(c.str + bPoint.str, bPoint.value);};
 
-c[params: Map<String, Boolean>]    :
-    d[params] cPoint[params];
+bPoint[params: Map<String, Boolean>][count : Boolean?][str : String]   :
+    XOR c[params,count,str] bPoint[params, op(count, c.value,"^"),str] {res.value = bPoint.value; res.str = check(XOR.text!! + c.str + bPoint.str,bPoint.value);}
+    | EPS {res.value = count; res.str = str;};
 
-cPoint[params: Map<String, Boolean>]  :
-    AND d[params] cPoint[params]
-    | EPS;
+c[params: Map<String, Boolean>][count : Boolean?][str : String]        :
+    d[params,count,str] cPoint[params,d.value,d.str] {res.value = cPoint.value ; res.str = check(d.str + cPoint.str, cPoint.value);};
 
-d[params: Map<String, Boolean>]       :
-    NOT e[params]
-    | e[params];
+cPoint[params: Map<String, Boolean>][count : Boolean?][str : String]   :
+    AND d[params,count,str] cPoint[params, op(count, d.value, "&"),str] {res.value = cPoint.value; res.str = check(AND.text!! + d.str + cPoint.str, cPoint.value);}
+    | EPS {res.value = count, res.str = str};
 
-e[params: Map<String, Boolean>]       :
-    LB a[params] RB
-    | VAR {res.value = params.get(VAR.text)!!; VAR.value = res.value;};
+d[params: Map<String, Boolean>][count : Boolean?][str : String]       :
+    NOT e[params,count,str] {res.value = op(e.value,false,"!") ; res.str = check(NOT.text!! + e.str, e.value);}
+    | e[params,count,str] {res.value = e.value; res.str = e.str};
+
+e[params: Map<String, Boolean>][count : Boolean?][str : String]        :
+    LB a[params,count,str] RB {res.value = a.value; res.str = check(LB.text!! + a.str + RB.text!!, a.value)}
+    | VAR {res.value = params.get(VAR.text); res.str =  if (res.value != null) res.value.toString() else VAR.text!!;};
 
 AND : '\\&';
 OR : '\\|';

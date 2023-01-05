@@ -9,7 +9,7 @@ import kotlin.io.path.Path
 
 class ParserGenerator(private val grammar: Grammar) {
 
-    private fun generateNodeClass(returnType : ClassName?, returnValue: String?) : TypeSpec {
+    private fun generateNodeClass(names: List<String> ,returnType : List<TypeName>, returnValue: List<String>) : TypeSpec {
         val res = TypeSpec.classBuilder(ClassName("", grammar.name + "Node"))
             .primaryConstructor(
                 FunSpec.constructorBuilder()
@@ -49,13 +49,13 @@ class ParserGenerator(private val grammar: Grammar) {
                 FunSpec.builder("toString")
                     .addModifiers(KModifier.OVERRIDE)
                     .returns(String::class)
-                    .addStatement("return \"\$name: \$value\"")
+                    .addStatement("return \"\$name\"")
                     .build()
             )
-        if (returnType != null && returnValue != null) {
+        for (i in returnType.indices) {
             res.addProperty(
-                PropertySpec.builder("value", returnType)
-                    .initializer(returnValue)
+                PropertySpec.builder(names[i], returnType[i])
+                    .initializer(returnValue[i])
                     .mutable()
                     .build()
             )
@@ -119,9 +119,13 @@ class ParserGenerator(private val grammar: Grammar) {
                 val typeArgs = typeArg.split("<")[1].dropLast(1).split(",").map { ClassName("", it) }
                 funSpec.addParameter(nameArg, type.parameterizedBy(typeArgs))
             } else {
-                funSpec.addParameter(nameArg, ClassName("", typeArg))
+                if (typeArg.endsWith("?")){
+                    funSpec.addParameter(nameArg, ClassName("", typeArg.dropLast(1)).copy(nullable = true))
+                } else {
+                    funSpec.addParameter(nameArg, ClassName("", typeArg))
+                }
             }
-            if (typeArg == grammar.returnType){
+            if (typeArg == grammar.returnType[0]){
                 funSpec.addStatement("res.value = %L", nameArg)
             }
         }
@@ -172,7 +176,7 @@ class ParserGenerator(private val grammar: Grammar) {
         grammar.buildFirst()
         grammar.buildFollow()
 
-        val nodeClass = generateNodeClass(if (grammar.returnType == null) null else ClassName("", grammar.returnType!!), grammar.returnValue)
+        val nodeClass = generateNodeClass(grammar.namesNodeVar,grammar.returnType.map{ if (it.endsWith("?")) ClassName("", it.dropLast(1)).copy(nullable = true) else ClassName("", it)} , grammar.returnValue)
 
         val parserClass = TypeSpec.classBuilder(ClassName("", grammar.name + "Parser"))
             .primaryConstructor(

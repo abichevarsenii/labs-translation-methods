@@ -2,6 +2,7 @@ grammar Calculator;
 
 
 @node (
+name: value;
 return Int;
 default 0;
 )

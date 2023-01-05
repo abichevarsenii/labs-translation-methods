@@ -37,8 +37,9 @@ class rulesMyVisitor : rulesBaseVisitor<Grammar>() {
 
     override fun visitNodeContext(ctx: rulesParser.NodeContextContext?): Grammar {
         if (ctx != null) {
-            ctx.x.returnType = ctx.RETURN_TYPE().text.split(" ")[1].dropLast(1)
-            ctx.x.returnValue = ctx.RETURN_VALUE().text.split(" ")[1].dropLast(1)
+            ctx.x.namesNodeVar.add(ctx.NAME_VAR().text.split(" ")[1].dropLast(1))
+            ctx.x.returnType.add(ctx.RETURN_TYPE().text.split(" ")[1].dropLast(1))
+            ctx.x.returnValue.add(ctx.RETURN_VALUE().text.split(" ")[1].dropLast(1))
         }
         return Grammar()
     }

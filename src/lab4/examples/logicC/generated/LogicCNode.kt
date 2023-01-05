@@ -8,7 +8,9 @@ public class LogicCNode(
 
   public var isTerminal: kotlin.Boolean = false
 
-  public var `value`: Boolean = false
+  public var `value`: Boolean? = null
 
-  public override fun toString(): kotlin.String = "$name: $value"
+  public var str: String = ""
+
+  public override fun toString(): kotlin.String = "$name"
 }

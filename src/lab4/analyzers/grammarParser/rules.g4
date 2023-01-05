@@ -2,12 +2,12 @@ grammar rules;
 
 @header {import lab4.analyzers.grammar.Grammar;}
 
-start[Grammar x] returns [Grammar val] : grammarName[$x] (imports[$x]) (members[$x])? (nodeContext[$x])? nonTerminals[$x] terminals[$x] EOF;
+start[Grammar x] returns [Grammar val] : grammarName[$x] (imports[$x]) (members[$x])? (nodeContext[$x])* nonTerminals[$x] terminals[$x] EOF;
 
 grammarName[Grammar x] returns [Grammar val] : GRAMMAR_NAME;
 
 members[Grammar x] returns [Grammar val] : MEMBER CODE ;
-nodeContext[Grammar x] returns [Grammar val] : NODE_CONTEXT '(' RETURN_TYPE RETURN_VALUE ')';
+nodeContext[Grammar x] returns [Grammar val] : NODE_CONTEXT '(' (NAME_VAR RETURN_TYPE RETURN_VALUE) ')';
 imports[Grammar x] returns [Grammar val] : IMPORT*;
 
 nonTerminals[Grammar x] returns [Grammar val] : (nonTerminal[$x])+;
@@ -26,6 +26,7 @@ GRAMMAR_NAME : 'grammar' (.)+? ';' ;
 IMPORT : 'import' (.)+? ';' ;
 MEMBER : '@member';
 NODE_CONTEXT : '@node';
+NAME_VAR : 'name' (.)+? ';';
 RETURN_TYPE : 'return' (.)+? ';';
 RETURN_VALUE : 'default' (.)+? ';';
 TOKEN_NAME : [A-Z][A-Z0-9_]+;

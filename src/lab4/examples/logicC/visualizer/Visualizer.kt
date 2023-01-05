@@ -15,9 +15,9 @@ import guru.nidi.graphviz.model.MutableNode
 import java.io.File
 
 fun main() {
-    val str = "a & b | c"
-    val res = LogicCParser(LogicCLexer(str)).a(mapOf("a" to false, "b" to false, "c" to true))
-    Visualizer("src/lab4/examples/logicC/visualizer/graph.png").visualizeGraph(res)
+    //val str = "a & b | c"
+    //val res = LogicCParser(LogicCLexer(str)).a(mapOf("a" to false, "b" to false, "c" to true),false,"")
+    //Visualizer("src/lab4/examples/logicC/visualizer/graph.png").visualizeGraph(res)
 }
 
 class Visualizer(private val path : String) {
