@@ -1,6 +1,7 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
-package lab3;
-import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
+// Generated from java-escape by ANTLR 4.11.1
+package lab3.parser.generated;
+
+    import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
 
 /**
  * This class provides an empty implementation of {@link HTMLHighlightingVisitor},
@@ -10,6 +11,7 @@ import org.antlr.v4.runtime.tree.AbstractParseTreeVisitor;
  * @param <T> The return type of the visit operation. Use {@link Void} for
  * operations with no return type.
  */
+@SuppressWarnings("CheckReturnValue")
 public class HTMLHighlightingBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements HTMLHighlightingVisitor<T> {
 	/**
 	 * {@inheritDoc}

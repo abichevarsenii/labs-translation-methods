@@ -1,5 +1,8 @@
 package lab3;
 
+import lab3.parser.generated.HTMLHighlightingBaseVisitor;
+import lab3.parser.generated.HTMLHighlightingParser;
+import lab3.resources.Tools;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.TerminalNode;
@@ -28,7 +31,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
 
     @Override
     public String visitCaseStatement(HTMLHighlightingParser.CaseStatementContext ctx) {
-        //caseStatement returns [String val] : CASE value ':' bodyFunction* (BREAK ';')?;
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
             res.append(Tools.getClass(ctx.CASE(), "keyword")).append(" ");
@@ -45,13 +47,11 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             Tools.downTab();
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
     @Override
     public String visitDefaultStatement(HTMLHighlightingParser.DefaultStatementContext ctx) {
-        //defaultStatement returns [String val] : DEFAULT ':' bodyFunction*;
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
             res.append(Tools.getClass(ctx.DEFAULT(), "keyword")).append(" ");
@@ -62,13 +62,11 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             Tools.downTab();
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
     @Override
     public String visitSwitchStatement(HTMLHighlightingParser.SwitchStatementContext ctx) {
-        //switchStatement returns [String val] : SWITCH '(' callMethod ')' '{' caseStatement* defaultStatement? '}';
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
             res.append(Tools.getClass(ctx.SWITCH(), "keyword")).append(" ");
@@ -86,7 +84,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             res.append(Tools.getClass("}", "simple")).append(" ");
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -106,15 +103,12 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
     @Override
     public String visitForStatement(HTMLHighlightingParser.ForStatementContext ctx) {
-        //forStatement returns [String val] : (FOR'(' (declareVar | assignVar) ';' (callMethod|term) ';' (callMethod|term) ')') ('{' bodyFunction* '}' | bodyFunction?);
         StringBuilder res = new StringBuilder();
-
         if (ctx.children != null) {
             List<ParseTree> children = ctx.children.stream().filter(Objects::nonNull).collect(Collectors.toList());
             res.append(Tools.getClass(ctx.FOR(), "keyword")).append(" ");
@@ -150,7 +144,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = Tools.getClass(res.toString(),"keyword") ;
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -170,7 +163,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -187,7 +179,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -210,7 +201,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -233,7 +223,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -264,7 +253,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = Tools.getClass(res.toString(),"simple");
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -295,11 +283,9 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
                 res.append(Tools.getClass(visit(ctx.nameType(ctx.nameType().size()-1)), "simple")).append(" ");
                 res.append(Tools.getClass(ctx.ASSIGN(ctx.nameType().size()-1), "simple")).append(" ");
                 res.append(checkVisit(ctx.value(ctx.nameType().size()-1)));
-                //res.append(Tools.getClass(";", "keyword")).append(" ");
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -335,7 +321,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -358,7 +343,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -461,7 +445,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
      */
     @Override
     public String visitFunction(HTMLHighlightingParser.FunctionContext ctx) {
-        //annotation* MODIFIER* typeVar nameType'(' (arg(','arg)*)? ')' exeptions? '{' bodyFunction? returnFunction? '}';
         StringBuilder res = new StringBuilder();
         if (ctx.children != null) {
             res.append(Tools.nextLine()).append(Tools.tab());
@@ -491,7 +474,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             res.append(Tools.nextLine());
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -514,7 +496,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = Tools.getClass(res.toString(),"simple") ;
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -537,7 +518,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -562,7 +542,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
         res.append(Tools.nextLine());
         Tools.downTab();
         res.append(Tools.tab()).append(Tools.getClass("}", "simple")).append(" ");
-        //res.append(Tools.nextLine());
         res.append(Tools.getClass(checkVisit(ctx.elseStatement()), "simple"));
         ctx.val = res.toString();
         return ctx.val;
@@ -587,7 +566,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -610,7 +588,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -633,7 +610,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -651,7 +627,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             res.append(Tools.getClass(visit(ctx.nameType()), "simple"));
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -678,7 +653,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             res.append(Tools.nextLine()).append(Tools.getClass("}", "simple")).append(" ");
         }
         ctx.val = res.toString();
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -701,7 +675,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
 
@@ -724,9 +697,6 @@ public class HTMLHighlightingMyVisitor extends HTMLHighlightingBaseVisitor<Strin
             }
             ctx.val = res.toString();
         }
-        //System.out.println(ctx.val);
         return ctx.val;
     }
-
-
 }

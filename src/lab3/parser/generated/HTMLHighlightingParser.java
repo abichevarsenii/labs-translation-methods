@@ -1,17 +1,17 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
-package lab3;
+// Generated from java-escape by ANTLR 4.11.1
+package lab3.parser.generated;
+
+    import lab3.resources.Tools;
+
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+	import org.antlr.v4.runtime.tree.*;
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
-@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
+@SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class HTMLHighlightingParser extends Parser {
-	static { RuntimeMetaData.checkVersion("4.10.1", RuntimeMetaData.VERSION); }
+	static { RuntimeMetaData.checkVersion("4.11.1", RuntimeMetaData.VERSION); }
 
 	protected static final DFA[] _decisionToDFA;
 	protected static final PredictionContextCache _sharedContextCache =
@@ -110,7 +110,7 @@ public class HTMLHighlightingParser extends Parser {
 	}
 
 	@Override
-	public String getGrammarFileName() { return "HTMLHighlighting.g4"; }
+	public String getGrammarFileName() { return "java-escape"; }
 
 	@Override
 	public String[] getRuleNames() { return ruleNames; }
@@ -126,6 +126,7 @@ public class HTMLHighlightingParser extends Parser {
 		_interp = new ParserATNSimulator(this,_ATN,_decisionToDFA,_sharedContextCache);
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class StartContext extends ParserRuleContext {
 		public String val;
 		public ClassContext class_() {
@@ -171,6 +172,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class NameTypeContext extends ParserRuleContext {
 		public String val;
 		public PrimitiveTypeContext primitiveType() {
@@ -256,6 +258,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TypeVarContext extends ParserRuleContext {
 		public String val;
 		public NameTypeContext nameType() {
@@ -373,6 +376,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrimitiveValueContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode INT() { return getToken(HTMLHighlightingParser.INT, 0); }
@@ -409,7 +413,7 @@ public class HTMLHighlightingParser extends Parser {
 			{
 			setState(92);
 			_la = _input.LA(1);
-			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << NULL) | (1L << INT) | (1L << FLOAT) | (1L << STRING) | (1L << CHAR) | (1L << BOOLEAN))) != 0)) ) {
+			if ( !(((_la) & ~0x3f) == 0 && ((1L << _la) & 4227858432L) != 0) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -430,6 +434,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class PrimitiveTypeContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode INT_TYPE() { return getToken(HTMLHighlightingParser.INT_TYPE, 0); }
@@ -465,7 +470,7 @@ public class HTMLHighlightingParser extends Parser {
 			{
 			setState(94);
 			_la = _input.LA(1);
-			if ( !(((((_la - 61)) & ~0x3f) == 0 && ((1L << (_la - 61)) & ((1L << (INT_TYPE - 61)) | (1L << (FLOAT_TYPE - 61)) | (1L << (CHAR_TYPE - 61)) | (1L << (BOOLEAN_TYPE - 61)) | (1L << (VOID_TYPE - 61)))) != 0)) ) {
+			if ( !((((_la - 61)) & ~0x3f) == 0 && ((1L << (_la - 61)) & 31L) != 0) ) {
 			_errHandler.recoverInline(this);
 			}
 			else {
@@ -486,6 +491,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ValueContext extends ParserRuleContext {
 		public String val;
 		public PrimitiveValueContext primitiveValue() {
@@ -666,6 +672,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class TermContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode UNARY_OPERATOR() { return getToken(HTMLHighlightingParser.UNARY_OPERATOR, 0); }
@@ -785,6 +792,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DeclareVarContext extends ParserRuleContext {
 		public String val;
 		public TypeVarContext typeVar() {
@@ -913,6 +921,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DeclareFieldContext extends ParserRuleContext {
 		public String val;
 		public TypeVarContext typeVar() {
@@ -1083,6 +1092,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AssignVarContext extends ParserRuleContext {
 		public String val;
 		public NameTypeContext nameType() {
@@ -1136,6 +1146,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class CallMethodContext extends ParserRuleContext {
 		public String val;
 		public List<NameTypeContext> nameType() {
@@ -1276,6 +1287,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class FunctionContext extends ParserRuleContext {
 		public String val;
 		public TypeVarContext typeVar() {
@@ -1458,6 +1470,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class AnnotationContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode AT() { return getToken(HTMLHighlightingParser.AT, 0); }
@@ -1524,6 +1537,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ArgContext extends ParserRuleContext {
 		public String val;
 		public TypeVarContext typeVar() {
@@ -1574,6 +1588,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExeptionsContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode THROWS() { return getToken(HTMLHighlightingParser.THROWS, 0); }
@@ -1642,6 +1657,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BodyFunctionContext extends ParserRuleContext {
 		public String val;
 		public DeclareVarContext declareVar() {
@@ -1751,6 +1767,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ReturnFunctionContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode RETURN() { return getToken(HTMLHighlightingParser.RETURN, 0); }
@@ -1801,6 +1818,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ClassContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode CLASS() { return getToken(HTMLHighlightingParser.CLASS, 0); }
@@ -1934,6 +1952,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ImplementsContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode IMPLEMENTS() { return getToken(HTMLHighlightingParser.IMPLEMENTS, 0); }
@@ -2002,6 +2021,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ExstendsContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode EXTENDS() { return getToken(HTMLHighlightingParser.EXTENDS, 0); }
@@ -2050,6 +2070,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ConstructorContext extends ParserRuleContext {
 		public String val;
 		public NameTypeContext nameType() {
@@ -2205,6 +2226,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class BodyClassContext extends ParserRuleContext {
 		public String val;
 		public ConstructorContext constructor() {
@@ -2318,6 +2340,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class CastStatementContext extends ParserRuleContext {
 		public String val;
 		public TypeVarContext typeVar() {
@@ -2372,6 +2395,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class IfStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode IF() { return getToken(HTMLHighlightingParser.IF, 0); }
@@ -2494,6 +2518,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ElseStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode ELSE() { return getToken(HTMLHighlightingParser.ELSE, 0); }
@@ -2546,6 +2571,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class ForStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode FOR() { return getToken(HTMLHighlightingParser.FOR, 0); }
@@ -2714,6 +2740,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class SwitchStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode SWITCH() { return getToken(HTMLHighlightingParser.SWITCH, 0); }
@@ -2804,6 +2831,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class CaseStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode CASE() { return getToken(HTMLHighlightingParser.CASE, 0); }
@@ -2891,6 +2919,7 @@ public class HTMLHighlightingParser extends Parser {
 		return _localctx;
 	}
 
+	@SuppressWarnings("CheckReturnValue")
 	public static class DefaultStatementContext extends ParserRuleContext {
 		public String val;
 		public TerminalNode DEFAULT() { return getToken(HTMLHighlightingParser.DEFAULT, 0); }

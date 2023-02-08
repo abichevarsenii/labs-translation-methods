@@ -1,4 +1,4 @@
-package lab3;
+package lab3.resources;
 
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.tree.ParseTree;

@@ -1,6 +1,7 @@
-// Generated from C:/Users/Arsenii/labs-translation-methods/src/lab3\HTMLHighlighting.g4 by ANTLR 4.10.1
-package lab3;
-import org.antlr.v4.runtime.tree.ParseTreeListener;
+// Generated from java-escape by ANTLR 4.11.1
+package lab3.parser.generated;
+
+    import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
  * This interface defines a complete listener for a parse tree produced by
